@@ -1,8 +1,10 @@
 package hello.hellospring.service;
 
+import hello.hellospring.domain.Comment;
 import hello.hellospring.domain.Priority;
 import hello.hellospring.domain.State;
 import hello.hellospring.domain.Ticket;
+import hello.hellospring.repository.CommentRepository;
 import hello.hellospring.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository, CommentRepository commentRepository) {
         this.ticketRepository = ticketRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -27,6 +31,20 @@ public class TicketServiceImpl implements TicketService {
     {
         ticketRepository.save(ticket);
         return ticket;
+    }
+
+    @Override
+    public Ticket updateTicket(int ticketId, Ticket ticket) {
+        Ticket existingTicket = ticketRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not found"));
+        existingTicket.setTitle(ticket.getTitle());
+        existingTicket.setDescription(ticket.getDescription());
+        existingTicket.setReporter(ticket.getReporter());
+        existingTicket.setDate(ticket.getDate());
+        existingTicket.setFixer(ticket.getFixer());
+        existingTicket.setAssignee(ticket.getAssignee());
+        existingTicket.setPriority(ticket.getPriority());
+        existingTicket.setState(ticket.getState());
+        return ticketRepository.save(existingTicket);
     }
 
     @Override
@@ -73,4 +91,13 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> findAllTickets() {
         return ticketRepository.findAll();
     }
+    @Override
+    public Ticket addCommentToTicket(int ticketId, Comment comment) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not found"));
+        commentRepository.save(comment);
+        ticket.getComments().add(comment);
+        return ticketRepository.save(ticket);
+    }
+
+
 }

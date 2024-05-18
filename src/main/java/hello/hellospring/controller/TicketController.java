@@ -1,5 +1,6 @@
 package hello.hellospring.controller;
 
+import hello.hellospring.domain.Comment;
 import hello.hellospring.domain.Priority;
 import hello.hellospring.domain.State;
 import hello.hellospring.domain.Ticket;
@@ -74,5 +75,18 @@ public class TicketController {
         List<Ticket> tickets = ticketService.findAllTickets();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
+
+    @PostMapping("/{ticketId}/comments")
+    public ResponseEntity<Ticket> addCommentToTicket(@PathVariable int ticketId, @RequestBody Comment comment) {
+        Ticket updatedTicket = ticketService.addCommentToTicket(ticketId, comment);
+        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    }
+
+    @PutMapping("/{ticketId}")
+    public ResponseEntity<Ticket> updateTicket(@PathVariable int ticketId, @RequestBody Ticket ticket) {
+        Ticket updatedTicket = ticketService.updateTicket(ticketId, ticket);
+        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    }
+
 }
 
