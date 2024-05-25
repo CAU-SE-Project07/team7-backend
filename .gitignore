@@ -5,6 +5,27 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# 추가
+*.lock
+*.bin
+*.class
+gradle/*.lock
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+.gradle/**
+/.gradle/**
+build/**
+/build/**
+.idea/**
+/.idea/**
+bin/**
+/bin/**
+gradle/**
+/gradle/**
+
+
+
 ### STS ###
 .apt_generated
 .classpath
