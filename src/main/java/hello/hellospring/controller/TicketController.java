@@ -1,9 +1,11 @@
 package hello.hellospring.controller;
 
 import hello.hellospring.domain.Comment;
-import hello.hellospring.domain.Priority;
-import hello.hellospring.domain.State;
+import hello.hellospring.domain.enums.Priority;
+import hello.hellospring.domain.enums.State;
 import hello.hellospring.domain.Ticket;
+import hello.hellospring.dto.TicketDTO;
+import hello.hellospring.dto.TicketResponseDTO;
 import hello.hellospring.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,79 +16,56 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tickets")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
-    private final TicketService ticketService;
-
     @Autowired
-    public TicketController(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
+    private TicketService ticketService;
+
     @PostMapping
-    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
-        Ticket createdTicket = ticketService.addTicket(ticket);
-        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
-    }
-    @GetMapping("/title/{title}")
-    public ResponseEntity<List<Ticket>> getTicketsByTitle(@PathVariable String title) {
-        List<Ticket> tickets = ticketService.findByTitle(title);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    public ResponseEntity<TicketResponseDTO> createTicket(@RequestBody TicketDTO ticketDTO) {
+        Ticket createdTicket = ticketService.createTicket(ticketDTO);
+        TicketResponseDTO responseDTO = ticketService.convertToDTO(createdTicket);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/reporter/{reporter}")
-    public ResponseEntity<List<Ticket>> getTicketsByReporter(@PathVariable String reporter) {
-        List<Ticket> tickets = ticketService.findByReporter(reporter);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    @GetMapping
+    public List<TicketResponseDTO> getAllTickets() {
+        return ticketService.getAllTickets();
     }
 
-    @GetMapping("/date/{date}")
-    public ResponseEntity<List<Ticket>> getTicketsByDate(@PathVariable Date date) {
-        List<Ticket> tickets = ticketService.findByDate(date);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable int id) {
+        TicketResponseDTO ticketResponseDTO = ticketService.getTicketById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        return ResponseEntity.ok(ticketResponseDTO);
     }
 
-    @GetMapping("/fixer/{fixer}")
-    public ResponseEntity<List<Ticket>> getTicketsByFixer(@PathVariable String fixer) {
-        List<Ticket> tickets = ticketService.findByFixer(fixer);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<TicketResponseDTO> updateTicket(@PathVariable int id, @RequestBody TicketDTO ticketDTO) {
+        Ticket updatedTicket = ticketService.updateTicket(id, ticketDTO);
+        TicketResponseDTO responseDTO = ticketService.convertToDTO(updatedTicket);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/assignee/{assignee}")
-    public ResponseEntity<List<Ticket>> getTicketsByAssignee(@PathVariable String assignee) {
-        List<Ticket> tickets = ticketService.findByAssignee(assignee);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTicket(@PathVariable int id) {
+        ticketService.deleteTicket(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/priority/{priority}")
-    public ResponseEntity<List<Ticket>> getTicketsByPriority(@PathVariable Priority priority) {
-        List<Ticket> tickets = ticketService.findByPriority(priority);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    @GetMapping("/developer/{developerId}")
+    public List<TicketResponseDTO> getTicketsAssignedToDeveloper(@PathVariable int developerId) {
+        return ticketService.getTicketsAssignedToDeveloper(developerId);
+    }
+
+    @GetMapping("/tester/{testerId}/fixed")
+    public List<TicketResponseDTO> getFixedTicketsReportedByTester(@PathVariable int testerId) {
+        return ticketService.getFixedTicketsReportedByTester(testerId);
     }
 
     @GetMapping("/state/{state}")
-    public ResponseEntity<List<Ticket>> getTicketsByState(@PathVariable State state) {
-        List<Ticket> tickets = ticketService.findByState(state);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    public List<TicketResponseDTO> getTicketsByState(@PathVariable State state) {
+        return ticketService.getTicketsByState(state);
     }
-
-    @GetMapping("/allTickets")
-    public ResponseEntity<List<Ticket>> getAllTickets() {
-        List<Ticket> tickets = ticketService.findAllTickets();
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
-
-    @PostMapping("/{ticketId}/comments")
-    public ResponseEntity<Ticket> addCommentToTicket(@PathVariable int ticketId, @RequestBody Comment comment) {
-        Ticket updatedTicket = ticketService.addCommentToTicket(ticketId, comment);
-        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
-    }
-
-    @PutMapping("/{ticketId}")
-    public ResponseEntity<Ticket> updateTicket(@PathVariable int ticketId, @RequestBody Ticket ticket) {
-        Ticket updatedTicket = ticketService.updateTicket(ticketId, ticket);
-        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
-    }
-
 }
-
