@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class PriorityEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int priorityId;
     private String priorityNm; // 우선순위 명
     private int level; // 레벨

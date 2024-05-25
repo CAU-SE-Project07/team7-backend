@@ -30,13 +30,8 @@ public class MemberEntity {
     private String nickNm; // 닉네임
     @Column
     private String email; // 이메일
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
-    private ProjectEntity projectId;
-    @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
-    private List<IssueEntity> issueEntities = new ArrayList<>();
-    @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
-    private List<CommentEntity> commentEntities = new ArrayList<>();
+    @Column
+    private int projectId; // 프로젝트 아이디(외래키)
 
     public MemberEntity() {};
 }

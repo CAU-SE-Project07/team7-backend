@@ -32,14 +32,10 @@ public class IssueEntity {
     private String priority; //우선 순위
     @Column
     private String state; // 상태 값
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
-    private ProjectEntity projectId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
-    private MemberEntity memberId;
-    @OneToMany(mappedBy = "issueId", cascade = CascadeType.REMOVE)
-    private List<CommentEntity> commentEntities = new ArrayList<>();
+    @Column
+    private int projectId; // 프로젝트 아이디(외래키)
+    @Column
+    private int memberId; // 사용자 아이디(외래키)
 
     public IssueEntity() {}
 }

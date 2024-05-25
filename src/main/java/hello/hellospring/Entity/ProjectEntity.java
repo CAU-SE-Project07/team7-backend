@@ -19,11 +19,5 @@ public class ProjectEntity {
     private String projectNm;
     @Column
     private String projectDesc;
-    @OneToMany(mappedBy = "projectId", cascade = CascadeType.REMOVE)
-    private List<MemberEntity> memberEntities = new ArrayList<>();
-    @OneToMany(mappedBy = "projectId", cascade = CascadeType.REMOVE)
-    private List<IssueEntity> issueEntities = new ArrayList<>();
-    @OneToMany(mappedBy = "projectId", cascade = CascadeType.REMOVE)
-    private List<CommentEntity> commentEntities = new ArrayList<>();
     public ProjectEntity() {};
 }

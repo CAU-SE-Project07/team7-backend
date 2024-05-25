@@ -18,17 +18,12 @@ public class CommentEntity {
     private String content; // 댓글 내용
     @Column
     private Date date; // 등록 날짜
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
-    private ProjectEntity projectId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
-    private MemberEntity memberId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "issueId")
-    private IssueEntity issueId;
+    @Column
+    private int projectId; // 프로젝트 아이디(외래키)
+    @Column
+    private int memberId; // 사용자 아이디(외래키)
+    @Column
+    private int issueId; // 이슈 아이디(외래키)
 
     public CommentEntity () {};
 }
