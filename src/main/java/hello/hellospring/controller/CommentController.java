@@ -1,7 +1,7 @@
 package hello.hellospring.controller;
 
-import hello.hellospring.Vo.CommentVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.vo.CommentVo;
+import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.CommentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

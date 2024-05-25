@@ -1,7 +1,7 @@
 package hello.hellospring.service;
 
-import hello.hellospring.Vo.ProjectVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.vo.ProjectVo;
+import hello.hellospring.vo.ResponseVo;
 
 public interface ProjectService {
     ResponseVo insertProject(ProjectVo projectVo);

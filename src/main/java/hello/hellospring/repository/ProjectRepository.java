@@ -1,7 +1,6 @@
 package hello.hellospring.repository;
 
-import hello.hellospring.Entity.ProjectEntity;
-import hello.hellospring.Vo.ProjectVo;
+import hello.hellospring.entity.ProjectEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,7 @@
 package hello.hellospring.controller;
 
-import hello.hellospring.Vo.PriorityVo;
-import hello.hellospring.Vo.ResponseVo;
-import hello.hellospring.service.MemberService;
+import hello.hellospring.vo.PriorityVo;
+import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.PriorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

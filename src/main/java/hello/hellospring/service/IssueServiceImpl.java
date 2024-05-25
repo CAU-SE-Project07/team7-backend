@@ -1,10 +1,10 @@
 package hello.hellospring.service;
 
-import hello.hellospring.Entity.IssueEntity;
-import hello.hellospring.Entity.MemberEntity;
-import hello.hellospring.Entity.ProjectEntity;
-import hello.hellospring.Vo.IssueVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.entity.IssueEntity;
+import hello.hellospring.entity.MemberEntity;
+import hello.hellospring.entity.ProjectEntity;
+import hello.hellospring.vo.IssueVo;
+import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.repository.CommentRepository;
 import hello.hellospring.repository.IssueRepository;
 import hello.hellospring.repository.MemberRepository;

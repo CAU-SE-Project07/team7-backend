@@ -1,4 +1,4 @@
-package hello.hellospring.Vo;
+package hello.hellospring.vo;
 
 import lombok.Builder;
 import lombok.Data;

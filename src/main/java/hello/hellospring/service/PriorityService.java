@@ -1,8 +1,7 @@
 package hello.hellospring.service;
 
-import hello.hellospring.Vo.MemberVo;
-import hello.hellospring.Vo.PriorityVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.vo.PriorityVo;
+import hello.hellospring.vo.ResponseVo;
 
 public interface PriorityService {
     ResponseVo insertPriority(PriorityVo priorityVo);

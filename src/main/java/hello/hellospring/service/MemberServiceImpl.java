@@ -1,9 +1,9 @@
 package hello.hellospring.service;
 
-import hello.hellospring.Entity.MemberEntity;
-import hello.hellospring.Entity.ProjectEntity;
-import hello.hellospring.Vo.MemberVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.entity.MemberEntity;
+import hello.hellospring.entity.ProjectEntity;
+import hello.hellospring.vo.MemberVo;
+import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.repository.CommentRepository;
 import hello.hellospring.repository.IssueRepository;
 import hello.hellospring.repository.MemberRepository;
@@ -12,8 +12,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
-import java.util.Optional;
 
 @Service
 @Transactional

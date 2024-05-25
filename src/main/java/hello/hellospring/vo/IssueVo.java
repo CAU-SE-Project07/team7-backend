@@ -1,9 +1,7 @@
-package hello.hellospring.Vo;
+package hello.hellospring.vo;
 
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  * Java 객체 클래스

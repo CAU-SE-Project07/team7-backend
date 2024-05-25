@@ -1,4 +1,4 @@
-package hello.hellospring.Mapper;
+package hello.hellospring.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 

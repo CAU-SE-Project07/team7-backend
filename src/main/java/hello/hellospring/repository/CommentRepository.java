@@ -1,5 +1,5 @@
 package hello.hellospring.repository;
-import hello.hellospring.Entity.CommentEntity;
+import hello.hellospring.entity.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

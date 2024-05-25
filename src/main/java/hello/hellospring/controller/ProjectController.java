@@ -1,7 +1,7 @@
 package hello.hellospring.controller;
 
-import hello.hellospring.Vo.ProjectVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.vo.ProjectVo;
+import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.ProjectService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

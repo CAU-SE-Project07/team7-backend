@@ -1,20 +1,10 @@
 package hello.hellospring.controller;
 
-import hello.hellospring.Entity.CommentEntity;
-import hello.hellospring.Entity.IssueEntity;
-import hello.hellospring.Enum.Priority;
-import hello.hellospring.Enum.State;
-import hello.hellospring.Vo.IssueVo;
-import hello.hellospring.Vo.MemberVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.vo.IssueVo;
+import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/issue")

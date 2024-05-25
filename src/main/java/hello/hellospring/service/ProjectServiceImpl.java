@@ -1,10 +1,9 @@
 package hello.hellospring.service;
 
-import hello.hellospring.Entity.ProjectEntity;
-import hello.hellospring.Vo.ProjectVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.entity.ProjectEntity;
+import hello.hellospring.vo.ProjectVo;
+import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.repository.ProjectRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 

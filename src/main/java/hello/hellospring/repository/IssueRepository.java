@@ -1,7 +1,7 @@
 package hello.hellospring.repository;
 
-import hello.hellospring.Entity.IssueEntity;
-import hello.hellospring.Entity.MemberEntity;
+import hello.hellospring.entity.IssueEntity;
+import hello.hellospring.entity.MemberEntity;
 import hello.hellospring.Enum.Priority;
 import hello.hellospring.Enum.State;
 import org.springframework.data.jpa.repository.JpaRepository;
