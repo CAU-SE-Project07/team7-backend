@@ -57,6 +57,7 @@ public class IssueService {
         return issueDtoList;
 
     }
+
     @Transactional
     public void updateIssue(Integer issueId,IssueDto issueDto) {
         Issue issue = issueRepository.findById(issueId.longValue()).orElseThrow();
@@ -71,11 +72,16 @@ public class IssueService {
                 .build());
     }
 
-    public Issue getIssueDetail(Integer id){
-        Optional<Issue> issue = Optional.of(this.issueRepository.findById(id.longValue()).orElseThrow());
-
-
-        return issue.get();
+    public IssueDto getIssueDetail(String title){
+        Issue issue = issueRepository.findByTitle(title).orElseThrow();
+        return IssueDto.builder()
+                .title(issue.getTitle())
+                .content(issue.getContent())
+                .reporter(issue.getReporter())
+                .priority(issue.getPriority())
+                .state(issue.getState())
+                .assignee(issue.getAssignee())
+                .build();
 
     }
 

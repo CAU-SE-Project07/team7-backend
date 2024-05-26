@@ -12,4 +12,6 @@ public interface IssueRepository extends JpaRepository<Issue,Long> {
     Optional<List<Issue>> findAllByReporter(String reporter);
     Optional<List<Issue>> findAllById(Integer id);
 
+   Optional<Issue> findByTitle(String title);
+
 }
