@@ -8,7 +8,7 @@ import lombok.Data;
  * */
 @Data
 @Builder
-public class IssueVo {
+public class IssueResVo {
     private int issueId;
     private String title;
     private String description;

@@ -18,11 +18,14 @@ repositories {
 dependencies {
 	// 새로 추가한 의존성
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	// mybatis
-	//implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
 
+	// mybatis
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
+	// MyBatis 쿼리문 조회
+	implementation group: 'org.bgee.log4jdbc-log4j2', name:'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+	// sql로그
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
 	// 기존
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
