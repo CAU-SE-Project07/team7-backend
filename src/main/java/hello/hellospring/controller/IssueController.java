@@ -42,17 +42,10 @@ public class IssueController {
     /**
      * 이슈 조회 - PL1이 모든 이슈 중, 상태 값이 NEW인 것만 조회(받은 상태값에 따라 조회)
      * */
+    @PostMapping("/selectStateNew")
     public ResponseVo<IssueVo> selectStateNew(@RequestBody String state) {
         return issueService.selectStateNew(state);
     }
-
-    /**
-     * 이슈 조회 - 할당자가 상태로 검색 - WHERE : 할당자 & 상태
-     * */
-//    @GetMapping("/title/{userId}/{state}")
-//    public ResponseVo<IssueVo> findIssueListByUserIdAndState(@PathVariable String userId, @PathVariable String state) {
-//        return issueService.getListByUserIdAndState(userId, state);
-//    }
 
 }
 

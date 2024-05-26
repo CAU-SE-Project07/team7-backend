@@ -167,21 +167,23 @@ public class IssueServiceImpl implements IssueService {
             /** 상태값에 따라 이슈 조회하기(현재 당사자에 한해) */
             List<IssueEntity> issueEntities = issueRepository.findByState(state);
             List<IssueVo> resultList = new ArrayList<>();
-            issueEntities.stream().map(e -> {
-                IssueVo issueVo = IssueVo.builder()
-                        .issueId(e.getIssueId())
-                        .title(e.getTitle())
-                        .description(e.getDescription())
-                        .reporter(e.getReporter())
-                        .date(e.getDate())
-                        .fixer(e.getFixer())
-                        .assignee(e.getAssignee())
-                        .priority(e.getPriority())
-                        .state(e.getState())
-                        .build();
-                resultList.add(issueVo);
-                return issueVo;
-            }).collect(Collectors.toList());
+            if(issueEntities.size() > 0) {
+                issueEntities.stream().map(e -> {
+                    IssueVo issueVo = IssueVo.builder()
+                            .issueId(e.getIssueId())
+                            .title(e.getTitle())
+                            .description(e.getDescription())
+                            .reporter(e.getReporter())
+                            .date(e.getDate())
+                            .fixer(e.getFixer())
+                            .assignee(e.getAssignee())
+                            .priority(e.getPriority())
+                            .state(e.getState())
+                            .build();
+                    resultList.add(issueVo);
+                    return issueVo;
+                }).collect(Collectors.toList());
+            }
             return new ResponseVo<>(200,"SUCCESS", resultList);
         } catch (Exception e) {
             return new ResponseVo<>(99,"FAIL");

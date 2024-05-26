@@ -9,5 +9,4 @@ public interface IssueService {
     ResponseVo updateIssue(IssueVo issueVo);
     ResponseVo<IssueVo> selectAllIssues();
     ResponseVo<IssueVo> selectStateNew(String state);
-    //ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state);
 }
