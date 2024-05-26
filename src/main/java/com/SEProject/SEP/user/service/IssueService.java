@@ -72,8 +72,8 @@ public class IssueService {
                 .build());
     }
 
-    public IssueDto getIssueDetail(String title){
-        Issue issue = issueRepository.findByTitle(title).orElseThrow();
+    public IssueDto getIssueDetail(Integer id){
+        Issue issue = issueRepository.findById(Long.valueOf(id)).orElseThrow();
         return IssueDto.builder()
                 .title(issue.getTitle())
                 .content(issue.getContent())

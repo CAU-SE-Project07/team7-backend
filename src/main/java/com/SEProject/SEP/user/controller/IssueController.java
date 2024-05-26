@@ -36,9 +36,9 @@ public class IssueController {
     }
 
 
-    @GetMapping("/detail/{title}")
-    public ResponseEntity<IssueDto> getIssueDetail(@PathVariable("title")String title){
-        return new ResponseEntity<>(issueService.getIssueDetail(title),HttpStatus.OK);
+    @GetMapping("/detail/{issueid}")
+    public ResponseEntity<IssueDto> getIssueDetail(@PathVariable("issueid")Integer issueId){
+        return new ResponseEntity<>(issueService.getIssueDetail(issueId),HttpStatus.OK);
     }
 
 }
