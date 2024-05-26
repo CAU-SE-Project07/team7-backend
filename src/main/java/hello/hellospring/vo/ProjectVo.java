@@ -8,6 +8,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class ProjectVo {
+    private int projectId;
     private String projectNm;
     private String projectDesc;
 }

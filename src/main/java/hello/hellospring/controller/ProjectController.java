@@ -6,6 +6,8 @@ import hello.hellospring.vo.ResponseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
@@ -21,5 +23,11 @@ public class ProjectController {
         return projectService.insertProject(projectVo);
     }
 
+
+    /** test */
+    @GetMapping("/allProject")
+    public List<ProjectVo> selectAll() {
+        return projectService.selectAll();
+    }
 
 }
