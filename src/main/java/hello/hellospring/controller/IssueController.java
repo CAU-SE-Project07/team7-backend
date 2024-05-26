@@ -4,19 +4,16 @@ import hello.hellospring.vo.IssueVo;
 import hello.hellospring.vo.MemberVo;
 import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.IssueService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/issue")
+@RequiredArgsConstructor
 public class IssueController {
 
     private final IssueService issueService;
-
-    @Autowired
-    public IssueController(IssueService issueService) {
-        this.issueService = issueService;
-    }
 
     /**
      * 이슈 추가 - Test 권한자 => 제목/내용/날짜만 추가

@@ -3,6 +3,7 @@ package hello.hellospring.controller;
 import hello.hellospring.vo.PriorityVo;
 import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.PriorityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,12 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/priority")
+@RequiredArgsConstructor
 public class PriorityController {
     private final PriorityService priorityService;
-    @Autowired
-    public PriorityController(PriorityService priorityService) {
-        this.priorityService = priorityService;
-    }
 
     /**
      * 우선순위 추가
