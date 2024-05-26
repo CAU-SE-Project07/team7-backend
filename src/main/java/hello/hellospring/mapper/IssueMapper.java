@@ -10,5 +10,5 @@ import java.util.List;
 @Mapper
 public interface IssueMapper {
     List<IssueResVo> selectAllByCondition(IssueReqVo issueReqVo);
-    ResponseVo updateAssignee(IssueReqVo issueReqVo);
+    void updateAssignee(IssueReqVo issueReqVo);
 }

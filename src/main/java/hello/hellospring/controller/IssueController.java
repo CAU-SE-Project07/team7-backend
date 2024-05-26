@@ -76,8 +76,8 @@ public class IssueController {
      * PL1 >
      * */
     @PostMapping("/02")
-    public ResponseVo updateAssignee(@RequestBody IssueReqVo issueReqVo ) {
-        return issueService.updateAssignee(issueReqVo);
+    public void updateAssignee(@RequestBody IssueReqVo issueReqVo ) throws Exception {
+        issueService.updateAssignee(issueReqVo);
     }
 
 }

@@ -250,15 +250,11 @@ public class IssueService {
     /**
      * PL1 > Assignee 변경(관리자로)
      * */
-    public ResponseVo updateAssignee(IssueReqVo issueReqVo) {
-        if(ObjectUtils.isEmpty(issueReqVo)) {
-            return null;
-        }
+    public void updateAssignee(IssueReqVo issueReqVo) throws Exception {
         try {
             issueMapper.updateAssignee(issueReqVo);
-            return new ResponseVo(200,"SUCCESS");
         } catch (Exception e) {
-            return new ResponseVo(99,"FAIL");
+            throw new Exception("할당자 변경 오류 발생");
         }
     }
 

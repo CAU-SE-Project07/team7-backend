@@ -12,8 +12,21 @@
     </select>
 
     <update id="updateAssignee" parameterType="hello.hellospring.vo.IssueReqVo">
-        UPDATE ISSUE
-        SET ASSIGNEE = #{assignee}
-        WHERE TITLE = #{TITLE}
+        update issue
+        set assignee = #{assignee}
+        where title = #{title}
+          and member_id =
+              (
+                  select member_id
+                  from
+                      (
+                          select distinct i.member_id
+                          from issue i
+                              inner join member m
+                                on i.member_id  = m.member_id
+                          where m.user_id = #{userId}
+                      ) as c
+              )
+        ;
     </update>
 </mapper>
