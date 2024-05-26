@@ -71,8 +71,8 @@ public class IssueServiceImpl implements IssueService {
                    .assignee(issueVo.getAssignee())
                    .priority(issueVo.getPriority())
                    .state(issueVo.getState())
-                   .memberId(memberEntity)
-                   .projectId(projectEntity)
+                   //.memberId(memberEntity)
+                   //.projectId(projectEntity)
                    .build();
            issueRepository.save(issueEntity);
            return new ResponseVo(200,"SUCCESS");

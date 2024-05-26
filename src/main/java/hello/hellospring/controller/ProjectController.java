@@ -3,10 +3,7 @@ package hello.hellospring.controller;
 import hello.hellospring.vo.ProjectVo;
 import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.ProjectService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/project")
@@ -24,5 +21,6 @@ public class ProjectController {
     public ResponseVo createProject(@RequestBody ProjectVo projectVo) {
         return projectService.insertProject(projectVo);
     }
+
 
 }

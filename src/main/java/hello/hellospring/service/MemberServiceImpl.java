@@ -42,17 +42,10 @@ public class MemberServiceImpl implements MemberService {
             if(isExistedMemberEntity != null) {
                 return new ResponseVo(11,"ID is duplicated.");
             }
-            /** 사용자 기본키 : memberId => 고유값 처리 */
-            int memberId = 1;
-            int count = memberRepository.findAll().size();
-            if(count > 0) {
-                memberId = count + 1;
-            }
             /** 등록하려는 프로젝트 엔티티 조회 - Where : projectNm */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(memberVo.getProjectNm());
             /** 사용자 엔티티 추가 */
             MemberEntity memberEntity = MemberEntity.builder()
-                    .memberId(memberId)
                     .userId(memberVo.getUserId())
                     .userNm(memberVo.getUserNm())
                     .userPwd(memberVo.getUserPwd())
@@ -60,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
                     .userRoles(memberVo.getUserRoles())
                     .nickNm(memberVo.getNickNm())
                     .email(memberVo.getEmail())
-                    .projectId(projectEntity)
+                    .projectId(projectEntity.getProjectId())
                     .build();
             memberRepository.save(memberEntity);
             return new ResponseVo(200,"SUCCESS");
@@ -74,7 +67,16 @@ public class MemberServiceImpl implements MemberService {
         try {
             /** 변경하려는 사용자 아이디를 가져와 데이터 조회 */
             MemberEntity memberEntity = memberRepository.findByUserId(memberVo.getUserId());
-            /** 멤버에 해당하는 */
+            /** 받은 파라미터의 사용자 아이디가 존재하지 않을 경우 */
+            if(memberEntity == null) {
+                return new ResponseVo(11,"아이디가 존재하지 않습니다.");
+            }
+            /** 현재 속해있는 프로젝트 엔티티 조회 - Where : projectNm => 필수로 넣어줘야 함(외래키 때문) */
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(memberVo.getProjectNm());
+            if(projectEntity == null) {
+                return new ResponseVo(12,"프로젝트가 존재하지 않습니다.");
+            }
+            /** 멤버 데이터 수정 - 수정 가능한 필드 : 사용자명, 비밀번호, 비밀번호 확인, 닉네임, 이메일 만 가능 */
             MemberEntity updateMemberEntity = MemberEntity.builder()
                     .memberId(memberEntity.getMemberId())
                     .userId(memberVo.getUserId())
@@ -84,8 +86,7 @@ public class MemberServiceImpl implements MemberService {
                     .userRoles(memberVo.getUserRoles())
                     .nickNm(memberVo.getNickNm())
                     .email(memberVo.getEmail())
-                    .issueEntities(null)
-                    .commentEntities(null)
+                    .projectId(projectEntity.getProjectId())
                     .build();
             memberRepository.save(updateMemberEntity);
             return new ResponseVo(200,"SUCCESS");

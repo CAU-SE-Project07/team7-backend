@@ -58,9 +58,9 @@ public class CommetServiceImpl implements CommentService {
                     .commentId(commentId)
                     .content(commentVo.getContent())
                     .date(new Date(commentVo.getDate()))
-                    .projectId(projectEntity)
-                    .memberId(memberEntity)
-                    .issueId(issueEntity)
+                    //.projectId(projectEntity)
+                    //.memberId(memberEntity)
+                    //.issueId(issueEntity)
                     .build();
             commentRepository.save(commentEntity);
             return new ResponseVo(200,"SUCCESS");

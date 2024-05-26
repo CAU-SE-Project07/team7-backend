@@ -26,14 +26,7 @@ public class ProjectServiceImpl implements ProjectService{
             if(isExsitedProjectEntity != null) {
                 return new ResponseVo(11,"Project Name is duplicated.");
             }
-            /** 프로젝트 기본키 : projectId => 고유값 처리 */
-            int projectId = 1;
-            int count = projectRepository.findAll().size();
-            if(count > 0) {
-                projectId = count + 1;
-            }
             ProjectEntity projectEntity = ProjectEntity.builder()
-                    .projectId(projectId)
                     .projectNm(projectVo.getProjectNm())
                     .projectDesc(projectVo.getProjectDesc())
                     .build();
