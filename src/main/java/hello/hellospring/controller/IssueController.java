@@ -22,16 +22,16 @@ public class IssueController {
      * 이슈 추가 - Test 권한자 => 제목/내용/날짜만 추가
      * */
     @PostMapping("/addIssue")
-    public ResponseVo createIssue(@RequestBody IssueResVo issueResVo) {
-        return issueService.insertIssue(issueResVo);
+    public ResponseVo createIssue(@RequestBody IssueReqVo issueReqVo) {
+        return issueService.insertIssue(issueReqVo);
     }
 
     /**
      * 이슈 변경 - 상태 + reporter
      * */
     @PostMapping("/updateStsRpt")
-    public ResponseVo updateIssueOfStateAndReporter(@RequestBody IssueResVo issueResVo) {
-        return issueService.updateIssue(issueResVo);
+    public ResponseVo updateIssueOfStateAndReporter(@RequestBody IssueReqVo issueReqVo) {
+        return issueService.updateIssue(issueReqVo);
     }
 
     /**
@@ -54,8 +54,8 @@ public class IssueController {
      * 이슈 변경 - PL1 > assignee 변경(admin으로)
      * */
     @PostMapping("/updateaAssignee")
-    public ResponseVo updateaAssignee(@RequestBody IssueResVo issueResVo) {
-        return issueService.updateaAssignee(issueResVo);
+    public ResponseVo updateaAssignee(@RequestBody IssueReqVo issueReqVo) {
+        return issueService.updateaAssignee(issueReqVo);
     }
 
 
@@ -73,7 +73,7 @@ public class IssueController {
     }
 
     /**
-     * PL1 >
+     * PL1 > Assignee 변경(admin으로)
      * */
     @PostMapping("/02")
     public void updateAssignee(@RequestBody IssueReqVo issueReqVo ) throws Exception {

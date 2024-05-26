@@ -32,39 +32,39 @@ public class IssueService {
     private final ProjectRepository projectRepository;
     private final IssueMapper issueMapper;
 
-    public ResponseVo insertIssue(IssueResVo issueResVo) {
+    public ResponseVo insertIssue(IssueReqVo issueReqVo) {
         try {
-           if(ObjectUtils.isEmpty(issueResVo)) {
+           if(ObjectUtils.isEmpty(issueReqVo)) {
                return null;
            }
            /** 등록하려는 이슈 제목 중복 체크 */
-           IssueEntity isExistedIssueEntity = issueRepository.findByTitle(issueResVo.getTitle());
+           IssueEntity isExistedIssueEntity = issueRepository.findByTitle(issueReqVo.getTitle());
            if(isExistedIssueEntity != null) {
                return new ResponseVo(11,"제목이 중복됩니다.");
            }
            /** 우선순위 처리 */
-           if(issueResVo.getPriority() == null || issueResVo.getPriority().equals("")) {
-               issueResVo.setPriority("major");
+           if(issueReqVo.getPriority() == null || issueReqVo.getPriority().equals("")) {
+               issueReqVo.setPriority("major");
            }
            /** 등록하려는 프로젝트 조회 */
-            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueResVo.getProjectNm());
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueReqVo.getProjectNm());
             if(projectEntity == null) {
                 return new ResponseVo(12,"프로젝트가 존재하지 않습니다.");
             }
             /** 사용자 찾기 */
-            MemberEntity memberEntity = memberRepository.findByUserId(issueResVo.getUserId());
+            MemberEntity memberEntity = memberRepository.findByUserId(issueReqVo.getUserId());
             if(memberEntity == null) {
                 return new ResponseVo(13,"사용자가 존재하지 않습니다.");
             }
            IssueEntity issueEntity = IssueEntity.builder()
-                   .title(issueResVo.getTitle())
-                   .description(issueResVo.getDescription())
-                   .reporter(issueResVo.getReporter())
-                   .date(issueResVo.getDate())
-                   .fixer(issueResVo.getFixer())
-                   .assignee(issueResVo.getAssignee())
-                   .priority(issueResVo.getPriority())
-                   .state(issueResVo.getState())
+                   .title(issueReqVo.getTitle())
+                   .description(issueReqVo.getDescription())
+                   .reporter(issueReqVo.getReporter())
+                   .date(issueReqVo.getDate())
+                   .fixer(issueReqVo.getFixer())
+                   .assignee(issueReqVo.getAssignee())
+                   .priority(issueReqVo.getPriority())
+                   .state(issueReqVo.getState())
                    .projectId(projectEntity.getProjectId())
                    .memberId(memberEntity.getMemberId())
                    .build();
@@ -75,28 +75,28 @@ public class IssueService {
        }
     }
 
-    public ResponseVo updateIssue(IssueResVo issueResVo) {
-        if(ObjectUtils.isEmpty(issueResVo)) {
+    public ResponseVo updateIssue(IssueReqVo issueReqVo) {
+        if(ObjectUtils.isEmpty(issueReqVo)) {
             return null;
         }
         try {
             /** 현재 변경하려는 이슈에 해당하는 프로젝트 조회 */
-            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueResVo.getProjectNm());
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueReqVo.getProjectNm());
             if(projectEntity == null) {
                 return new ResponseVo(11, "프로젝트가 존재하지 않습니다.");
             }
             /** 현재 변경하려는 이슈에 해당하는 사용자 조회 */
-            MemberEntity memberEntity = memberRepository.findByUserId(issueResVo.getUserId());
+            MemberEntity memberEntity = memberRepository.findByUserId(issueReqVo.getUserId());
             if(memberEntity == null) {
                 return new ResponseVo(12, "사용자가 존재하지 않습니다.");
             }
             /** 현재 변경하려는 기존 이슈 조회 */
-            IssueEntity issueEntity = issueRepository.findByTitle(issueResVo.getTitle());
+            IssueEntity issueEntity = issueRepository.findByTitle(issueReqVo.getTitle());
             if(issueEntity == null) {
                 return new ResponseVo(13,"이슈가 존재하지 않습니다.");
             }
             /** reporter 변경 시 존재하는 사용자인지 체크 */
-            MemberEntity chkReporter = memberRepository.findByUserId(issueResVo.getReporter());
+            MemberEntity chkReporter = memberRepository.findByUserId(issueReqVo.getReporter());
             if(chkReporter == null) {
                 return new ResponseVo(14, "레포터 사용자가 존재하지 않습니다.");
             }
@@ -104,14 +104,14 @@ public class IssueService {
             /** 이슈의 상태 및 reporter 변경 > test1 사용자 */
             IssueEntity updateIssue = IssueEntity.builder()
                     .issueId(issueEntity.getIssueId())
-                    .title(issueResVo.getTitle())
-                    .description(issueResVo.getDescription())
-                    .reporter(issueResVo.getReporter())
-                    .date(issueResVo.getDate())
-                    .fixer(issueResVo.getFixer())
-                    .assignee(issueResVo.getAssignee())
-                    .priority(issueResVo.getPriority())
-                    .state(issueResVo.getState())
+                    .title(issueReqVo.getTitle())
+                    .description(issueReqVo.getDescription())
+                    .reporter(issueReqVo.getReporter())
+                    .date(issueReqVo.getDate())
+                    .fixer(issueReqVo.getFixer())
+                    .assignee(issueReqVo.getAssignee())
+                    .priority(issueReqVo.getPriority())
+                    .state(issueReqVo.getState())
                     .projectId(projectEntity.getProjectId())
                     .memberId(memberEntity.getMemberId())
                     .build();
@@ -179,42 +179,42 @@ public class IssueService {
         }
     }
 
-    public ResponseVo updateaAssignee(IssueResVo issueResVo) {
-        if(ObjectUtils.isEmpty(issueResVo)) {
+    public ResponseVo updateaAssignee(IssueReqVo issueReqVo) {
+        if(ObjectUtils.isEmpty(issueReqVo)) {
             return null;
         }
         try {
             /** 변경하려는 이슈에 해당하는 프로젝트 조회 */
-            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueResVo.getProjectNm());
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueReqVo.getProjectNm());
             if(projectEntity == null) {
                 return new ResponseVo(11,"프로젝트가 존재하지 않습니다.");
             }
             /** 변경하려는 이슈에 해당하는 사용자 조회 */
-            MemberEntity memberEntity = memberRepository.findByUserId(issueResVo.getUserId());
+            MemberEntity memberEntity = memberRepository.findByUserId(issueReqVo.getUserId());
             if(memberEntity == null) {
                 return new ResponseVo(12,"사용자가 존재하지 않습니다.");
             }
             /** 변경하려는 이슈 조회 */
-            IssueEntity issueEntity = issueRepository.findByTitle(issueResVo.getTitle());
+            IssueEntity issueEntity = issueRepository.findByTitle(issueReqVo.getTitle());
             if(issueEntity == null) {
                 return new ResponseVo(13,"이슈가 존재하지 않습니다.");
             }
             /** 변경하려는 assignee 사용자가 존재하는지 확인 */
-            MemberEntity chkMember = memberRepository.findByUserId(issueResVo.getAssignee());
+            MemberEntity chkMember = memberRepository.findByUserId(issueReqVo.getAssignee());
             if(chkMember == null) {
                 return new ResponseVo(14,"할당자가 존재하지 않습니다.");
             }
             /** 이슈 assignee 변경 */
             IssueEntity updateIssue = IssueEntity.builder()
                     .issueId(issueEntity.getIssueId())
-                    .title(issueResVo.getTitle())
-                    .description(issueResVo.getDescription())
-                    .reporter(issueResVo.getReporter())
-                    .date(issueResVo.getDate())
-                    .fixer(issueResVo.getFixer())
-                    .assignee(issueResVo.getAssignee())
-                    .priority(issueResVo.getPriority())
-                    .state(issueResVo.getState())
+                    .title(issueReqVo.getTitle())
+                    .description(issueReqVo.getDescription())
+                    .reporter(issueReqVo.getReporter())
+                    .date(issueReqVo.getDate())
+                    .fixer(issueReqVo.getFixer())
+                    .assignee(issueReqVo.getAssignee())
+                    .priority(issueReqVo.getPriority())
+                    .state(issueReqVo.getState())
                     .projectId(projectEntity.getProjectId())
                     .memberId(memberEntity.getMemberId())
                     .build();

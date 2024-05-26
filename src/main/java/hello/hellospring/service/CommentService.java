@@ -4,7 +4,8 @@ import hello.hellospring.entity.CommentEntity;
 import hello.hellospring.entity.IssueEntity;
 import hello.hellospring.entity.MemberEntity;
 import hello.hellospring.entity.ProjectEntity;
-import hello.hellospring.vo.CommentVo;
+import hello.hellospring.vo.CommentReqVo;
+import hello.hellospring.vo.CommentResVo;
 import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.repository.CommentRepository;
 import hello.hellospring.repository.IssueRepository;
@@ -25,30 +26,30 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
 
-    public ResponseVo insertComment(CommentVo commentVo) {
+    public ResponseVo insertComment(CommentReqVo commentReqVo) {
         try {
-            if(ObjectUtils.isEmpty(commentVo)) {
+            if(ObjectUtils.isEmpty(commentReqVo)) {
                 return null;
             }
             /** 코멘트를 등록하려는 프로젝트 엔티티 조회 */
-            ProjectEntity projectEntity = projectRepository.findByProjectNm(commentVo.getProjectNm());
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(commentReqVo.getProjectNm());
             if(projectEntity == null) {
                 return new ResponseVo(11,"프로젝트가 존재하지 않습니다.");
             }
             /** 코멘트를 등록하려는 사용자 엔티티 조회 */
-            MemberEntity memberEntity = memberRepository.findByUserId(commentVo.getUserId());
+            MemberEntity memberEntity = memberRepository.findByUserId(commentReqVo.getUserId());
             if(memberEntity == null) {
                 return new ResponseVo(12,"사용자가 존재하지 않습니다.");
             }
             /** 코멘트를 등록하려는 이슈 엔티티 조회 */
-            IssueEntity issueEntity = issueRepository.findByTitle(commentVo.getTitle());
+            IssueEntity issueEntity = issueRepository.findByTitle(commentReqVo.getTitle());
             if(issueEntity == null) {
                 return new ResponseVo(13,"이슈가 존재하지 않습니다.");
             }
             /** 코멘트 데이터 insert */
             CommentEntity commentEntity = CommentEntity.builder()
-                    .content(commentVo.getContent())
-                    .date(commentVo.getDate())
+                    .content(commentReqVo.getContent())
+                    .date(commentReqVo.getDate())
                     .projectId(projectEntity.getProjectId())
                     .memberId(memberEntity.getMemberId())
                     .issueId(issueEntity.getIssueId())

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CommentVo {
+public class CommentResVo {
     private String content;
     private String date;
     private String userId; // 현재 로그인한 사용자 아이디
