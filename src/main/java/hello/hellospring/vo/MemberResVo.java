@@ -8,7 +8,7 @@ import lombok.Data;
  * */
 @Data
 @Builder
-public class MemberVo {
+public class MemberResVo {
     private int memberId;
     private String userId; // 아이디
     private String userNm; // 사용자명

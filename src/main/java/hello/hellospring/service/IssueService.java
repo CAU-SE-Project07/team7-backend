@@ -235,15 +235,30 @@ public class IssueService {
     /**
      * PL1 > 모든 이슈 조회하되 상태값 따라 조회도 가능
      * */
-    public ResponseVo<IssueResVo> selectAllByCondition(IssueReqVo issueResVo) {
-        if(ObjectUtils.isEmpty(issueResVo)) {
+    public ResponseVo<IssueResVo> selectAllByCondition(IssueReqVo issueReqVo) {
+        if(ObjectUtils.isEmpty(issueReqVo)) {
             return null;
         }
         try {
-            List<IssueResVo> list = issueMapper.selectAllByCondition(issueResVo);
+            List<IssueResVo> list = issueMapper.selectAllByCondition(issueReqVo);
             return new ResponseVo<>(200,"SUCCESS",list);
         } catch (Exception e) {
             return new ResponseVo<>(99,"FAIL");
+        }
+    }
+
+    /**
+     * PL1 > Assignee 변경(관리자로)
+     * */
+    public ResponseVo updateAssignee(IssueReqVo issueReqVo) {
+        if(ObjectUtils.isEmpty(issueReqVo)) {
+            return null;
+        }
+        try {
+            issueMapper.updateAssignee(issueReqVo);
+            return new ResponseVo(200,"SUCCESS");
+        } catch (Exception e) {
+            return new ResponseVo(99,"FAIL");
         }
     }
 

@@ -15,6 +15,10 @@ public class IssueController {
     private final IssueService issueService;
 
     /**
+     * JPA 사용
+     * */
+
+    /**
      * 이슈 추가 - Test 권한자 => 제목/내용/날짜만 추가
      * */
     @PostMapping("/addIssue")
@@ -57,13 +61,24 @@ public class IssueController {
 
 
     /***
-     *** MyBatis 사용 - PL1은 모든 이슈를 조회할 수 있되 상태값에 따라 조회도 가능
+     *** MyBatis 사용
+     * */
+
+    /**
+     * PL1 > 모든 이슈를 조회할 수 있되 상태값에 따라 조회도 가능
      * */
     @PostMapping("/01")
-    public ResponseVo<IssueResVo> selectAllByCondition(@RequestBody IssueReqVo issueResVo) {
-        return issueService.selectAllByCondition(issueResVo);
+    public ResponseVo<IssueResVo> selectAllByCondition(@RequestBody IssueReqVo issueReqVo) {
+        return issueService.selectAllByCondition(issueReqVo);
     }
 
+    /**
+     * PL1 >
+     * */
+    @PostMapping("/02")
+    public ResponseVo updateAssignee(@RequestBody IssueReqVo issueReqVo ) {
+        return issueService.updateAssignee(issueReqVo);
+    }
 
 }
 
