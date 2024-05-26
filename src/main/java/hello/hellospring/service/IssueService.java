@@ -7,6 +7,7 @@ import hello.hellospring.vo.ResponseVo;
 public interface IssueService {
     ResponseVo insertIssue(IssueVo issueVo);
     ResponseVo updateIssue(IssueVo issueVo);
-    ResponseVo<IssueVo> selectAllIssuesByPL(MemberVo memberVo);
+    ResponseVo<IssueVo> selectAllIssues();
+    ResponseVo<IssueVo> selectStateNew(String state);
     //ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state);
 }

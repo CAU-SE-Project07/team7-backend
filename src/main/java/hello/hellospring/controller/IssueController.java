@@ -32,11 +32,18 @@ public class IssueController {
     }
 
     /**
-     * 이슈 조회 - PL1이 모든 이슈를 브라우즈 > 본인에게 해당하는 이슈들만 조회
+     * 이슈 조회 - PL1이 모든 이슈 조회
      * */
     @PostMapping("/allIssues")
-    public ResponseVo<IssueVo> selectAllIssuesByPL(@RequestBody MemberVo memberVo) {
-        return issueService.selectAllIssuesByPL(memberVo);
+    public ResponseVo<IssueVo> selectAllIssues() {
+        return issueService.selectAllIssues();
+    }
+
+    /**
+     * 이슈 조회 - PL1이 모든 이슈 중, 상태 값이 NEW인 것만 조회(받은 상태값에 따라 조회)
+     * */
+    public ResponseVo<IssueVo> selectStateNew(@RequestBody String state) {
+        return issueService.selectStateNew(state);
     }
 
     /**

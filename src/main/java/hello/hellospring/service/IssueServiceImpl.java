@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -131,18 +132,10 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public ResponseVo<IssueVo> selectAllIssuesByPL(MemberVo memberVo) {
-        if(ObjectUtils.isEmpty(memberVo)) {
-            return null;
-        }
+    public ResponseVo<IssueVo> selectAllIssues() {
         try {
-            /** 당사자에 대한 사용자 엔티티 조회 */
-            MemberEntity memberEntity = memberRepository.findByUserId(memberVo.getUserId());
-            if(memberEntity == null) {
-                return new ResponseVo<>(11,"사용자가 존재하지 않습니다.");
-            }
-            /** 당사자에 해당하는 모든 이슈 조회 */
-            List<IssueEntity> issueEntities = issueRepository.findByReporter(memberEntity.getUserId());
+            /** 모든 이슈 조회 - PL1 */
+            List<IssueEntity> issueEntities = issueRepository.findAll();
             List<IssueVo> resultList = new ArrayList<>();
             issueEntities.stream().map(e -> {
                 IssueVo issueVo = IssueVo.builder()
@@ -160,6 +153,36 @@ public class IssueServiceImpl implements IssueService {
                 return issueVo;
             }).collect(Collectors.toList());
             return new ResponseVo<IssueVo>(200,"SUCCESS",resultList);
+        } catch (Exception e) {
+            return new ResponseVo<>(99,"FAIL");
+        }
+    }
+
+    @Override
+    public ResponseVo<IssueVo> selectStateNew(String state) {
+        if(StringUtils.isEmpty(state)) {
+            return null;
+        }
+        try {
+            /** 상태값에 따라 이슈 조회하기(현재 당사자에 한해) */
+            List<IssueEntity> issueEntities = issueRepository.findByState(state);
+            List<IssueVo> resultList = new ArrayList<>();
+            issueEntities.stream().map(e -> {
+                IssueVo issueVo = IssueVo.builder()
+                        .issueId(e.getIssueId())
+                        .title(e.getTitle())
+                        .description(e.getDescription())
+                        .reporter(e.getReporter())
+                        .date(e.getDate())
+                        .fixer(e.getFixer())
+                        .assignee(e.getAssignee())
+                        .priority(e.getPriority())
+                        .state(e.getState())
+                        .build();
+                resultList.add(issueVo);
+                return issueVo;
+            }).collect(Collectors.toList());
+            return new ResponseVo<>(200,"SUCCESS", resultList);
         } catch (Exception e) {
             return new ResponseVo<>(99,"FAIL");
         }

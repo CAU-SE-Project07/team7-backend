@@ -12,5 +12,6 @@ public interface IssueRepository extends JpaRepository<IssueEntity, Integer> {
     IssueEntity findByTitle(String title);
     List<IssueEntity> findByReporter(String userId);
     List<IssueEntity> findByMemberId(int memberId);
+    List<IssueEntity> findByState(String state);
 
 }
