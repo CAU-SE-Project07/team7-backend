@@ -190,6 +190,52 @@ public class IssueServiceImpl implements IssueService {
         }
     }
 
+    @Override
+    public ResponseVo updateaAssignee(IssueVo issueVo) {
+        if(ObjectUtils.isEmpty(issueVo)) {
+            return null;
+        }
+        try {
+            /** 변경하려는 이슈에 해당하는 프로젝트 조회 */
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
+            if(projectEntity == null) {
+                return new ResponseVo(11,"프로젝트가 존재하지 않습니다.");
+            }
+            /** 변경하려는 이슈에 해당하는 사용자 조회 */
+            MemberEntity memberEntity = memberRepository.findByUserId(issueVo.getUserId());
+            if(memberEntity == null) {
+                return new ResponseVo(12,"사용자가 존재하지 않습니다.");
+            }
+            /** 변경하려는 이슈 조회 */
+            IssueEntity issueEntity = issueRepository.findByTitle(issueVo.getTitle());
+            if(issueEntity == null) {
+                return new ResponseVo(13,"이슈가 존재하지 않습니다.");
+            }
+            /** 변경하려는 assignee 사용자가 존재하는지 확인 */
+            MemberEntity chkMember = memberRepository.findByUserId(issueVo.getAssignee());
+            if(chkMember == null) {
+                return new ResponseVo(14,"할당자가 존재하지 않습니다.");
+            }
+            /** 이슈 assignee 변경 */
+            IssueEntity updateIssue = IssueEntity.builder()
+                    .issueId(issueEntity.getIssueId())
+                    .title(issueVo.getTitle())
+                    .description(issueVo.getDescription())
+                    .reporter(issueVo.getReporter())
+                    .date(issueVo.getDate())
+                    .fixer(issueVo.getFixer())
+                    .assignee(issueVo.getAssignee())
+                    .priority(issueVo.getPriority())
+                    .state(issueVo.getState())
+                    .projectId(projectEntity.getProjectId())
+                    .memberId(memberEntity.getMemberId())
+                    .build();
+            issueRepository.save(updateIssue);
+            return new ResponseVo(200,"SUCCESS");
+        } catch (Exception e) {
+            return new ResponseVo(99,"FAIL");
+        }
+    }
 
 
 }

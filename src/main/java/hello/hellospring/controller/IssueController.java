@@ -47,5 +47,13 @@ public class IssueController {
         return issueService.selectStateNew(state);
     }
 
+    /**
+     * 이슈 변경 - PL1 > assignee 변경(admin으로)
+     * */
+    @PostMapping("/updateaAssignee")
+    public ResponseVo updateaAssignee(@RequestBody IssueVo issueVo) {
+        return issueService.updateaAssignee(issueVo);
+    }
+
 }
 

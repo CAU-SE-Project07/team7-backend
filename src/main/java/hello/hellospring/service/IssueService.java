@@ -9,4 +9,5 @@ public interface IssueService {
     ResponseVo updateIssue(IssueVo issueVo);
     ResponseVo<IssueVo> selectAllIssues();
     ResponseVo<IssueVo> selectStateNew(String state);
+    ResponseVo updateaAssignee(IssueVo issueVo);
 }
