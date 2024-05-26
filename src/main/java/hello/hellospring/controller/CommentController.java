@@ -1,8 +1,8 @@
 package hello.hellospring.controller;
 
+import hello.hellospring.service.CommentService;
 import hello.hellospring.vo.CommentVo;
 import hello.hellospring.vo.ResponseVo;
-import hello.hellospring.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/comment")
 @RequiredArgsConstructor
 public class CommentController {
+
     private final CommentService commentService;
 
     @PostMapping("/addComment")
