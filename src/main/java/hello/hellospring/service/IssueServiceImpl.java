@@ -86,10 +86,47 @@ public class IssueServiceImpl implements IssueService {
         if(ObjectUtils.isEmpty(issueVo)) {
             return null;
         }
-        /** 현재 변경하려는 이슈에 해당하는 프로젝트 조회 */
-        ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
+        try {
+            /** 현재 변경하려는 이슈에 해당하는 프로젝트 조회 */
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
+            if(projectEntity == null) {
+                return new ResponseVo(11, "프로젝트가 존재하지 않습니다.");
+            }
+            /** 현재 변경하려는 이슈에 해당하는 사용자 조회 */
+            MemberEntity memberEntity = memberRepository.findByUserId(issueVo.getUserId());
+            if(memberEntity == null) {
+                return new ResponseVo(12, "사용자가 존재하지 않습니다.");
+            }
+            /** 현재 변경하려는 기존 이슈 조회 */
+            IssueEntity issueEntity = issueRepository.findByTitle(issueVo.getTitle());
+            if(issueEntity == null) {
+                return new ResponseVo(13,"이슈가 존재하지 않습니다.");
+            }
+            /** reporter 변경 시 존재하는 사용자인지 체크 */
+            MemberEntity chkReporter = memberRepository.findByUserId(issueVo.getReporter());
+            if(chkReporter == null) {
+                return new ResponseVo(14, "레포터 사용자가 존재하지 않습니다.");
+            }
 
-        return null;
+            /** 이슈의 상태 및 reporter 변경 > test1 사용자 */
+            IssueEntity updateIssue = IssueEntity.builder()
+                    .issueId(issueEntity.getIssueId())
+                    .title(issueVo.getTitle())
+                    .description(issueVo.getDescription())
+                    .reporter(issueVo.getReporter())
+                    .date(issueVo.getDate())
+                    .fixer(issueVo.getFixer())
+                    .assignee(issueVo.getAssignee())
+                    .priority(issueVo.getPriority())
+                    .state(issueVo.getState())
+                    .projectId(projectEntity.getProjectId())
+                    .memberId(memberEntity.getMemberId())
+                    .build();
+            issueRepository.save(updateIssue);
+            return new ResponseVo(200,"SUCCESS");
+        } catch (Exception e) {
+            return new ResponseVo(9,"FAIL");
+        }
     }
 
 

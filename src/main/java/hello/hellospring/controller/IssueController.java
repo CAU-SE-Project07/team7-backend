@@ -28,6 +28,7 @@ public class IssueController {
     /**
      * 이슈 변경 - 상태 + reporter
      * */
+    @PostMapping("/updateStsRpt")
     public ResponseVo updateIssueOfStateAndReporter(@RequestBody IssueVo issueVo) {
         return issueService.updateIssue(issueVo);
     }
