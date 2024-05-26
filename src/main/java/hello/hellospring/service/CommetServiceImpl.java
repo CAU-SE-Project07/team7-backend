@@ -41,26 +41,28 @@ public class CommetServiceImpl implements CommentService {
             if(ObjectUtils.isEmpty(commentVo)) {
                 return null;
             }
-            /** 코멘트 기본키 : commentId => 고유값 처리 */
-            int commentId = 1;
-            int count = commentRepository.findAll().size();
-            if(count > 0) {
-                commentId = count + 1;
-            }
             /** 코멘트를 등록하려는 프로젝트 엔티티 조회 */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(commentVo.getProjectNm());
+            if(projectEntity == null) {
+                return new ResponseVo(11,"프로젝트가 존재하지 않습니다.");
+            }
             /** 코멘트를 등록하려는 사용자 엔티티 조회 */
             MemberEntity memberEntity = memberRepository.findByUserId(commentVo.getUserId());
+            if(memberEntity == null) {
+                return new ResponseVo(12,"사용자가 존재하지 않습니다.");
+            }
             /** 코멘트를 등록하려는 이슈 엔티티 조회 */
             IssueEntity issueEntity = issueRepository.findByTitle(commentVo.getTitle());
+            if(issueEntity == null) {
+                return new ResponseVo(13,"이슈가 존재하지 않습니다.");
+            }
             /** 코멘트 데이터 insert */
             CommentEntity commentEntity = CommentEntity.builder()
-                    .commentId(commentId)
                     .content(commentVo.getContent())
-                    .date(new Date(commentVo.getDate()))
-                    //.projectId(projectEntity)
-                    //.memberId(memberEntity)
-                    //.issueId(issueEntity)
+                    .date(commentVo.getDate())
+                    .projectId(projectEntity.getProjectId())
+                    .memberId(memberEntity.getMemberId())
+                    .issueId(issueEntity.getIssueId())
                     .build();
             commentRepository.save(commentEntity);
             return new ResponseVo(200,"SUCCESS");

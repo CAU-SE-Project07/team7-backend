@@ -18,11 +18,18 @@ public class IssueController {
     }
 
     /**
-     * 이슈 추가 - Test 권한자
+     * 이슈 추가 - Test 권한자 => 제목/내용/날짜만 추가
      * */
     @PostMapping("/addIssue")
-    public ResponseVo createTicket(@RequestBody IssueVo issueVo) {
+    public ResponseVo createIssue(@RequestBody IssueVo issueVo) {
         return issueService.insertIssue(issueVo);
+    }
+
+    /**
+     * 이슈 변경 - 상태 + reporter
+     * */
+    public ResponseVo updateIssueOfStateAndReporter(@RequestBody IssueVo issueVo) {
+        return issueService.updateIssue(issueVo);
     }
 
     /**

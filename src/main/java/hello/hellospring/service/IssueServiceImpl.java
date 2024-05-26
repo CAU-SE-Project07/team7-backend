@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,34 +46,33 @@ public class IssueServiceImpl implements IssueService {
            /** 등록하려는 이슈 제목 중복 체크 */
            IssueEntity isExistedIssueEntity = issueRepository.findByTitle(issueVo.getTitle());
            if(isExistedIssueEntity != null) {
-               return new ResponseVo(11,"Title is duplicated.");
+               return new ResponseVo(11,"제목이 중복됩니다.");
            }
-            /** 이슈 기본키 : issueId => 고유값 처리 */
-            int issueId = 1;
-            int count = issueRepository.findAll().size();
-            if(count > 0) {
-                issueId = count + 1;
-            }
            /** 우선순위 처리 */
            if(issueVo.getPriority() == null || issueVo.getPriority().equals("")) {
-               issueVo.setPriority("MAJOR");
+               issueVo.setPriority("major");
            }
            /** 등록하려는 프로젝트 조회 */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
+            if(projectEntity == null) {
+                return new ResponseVo(12,"프로젝트가 존재하지 않습니다.");
+            }
             /** 사용자 찾기 */
             MemberEntity memberEntity = memberRepository.findByUserId(issueVo.getUserId());
+            if(memberEntity == null) {
+                return new ResponseVo(13,"사용자가 존재하지 않습니다.");
+            }
            IssueEntity issueEntity = IssueEntity.builder()
-                   .issueId(issueId)
                    .title(issueVo.getTitle())
                    .description(issueVo.getDescription())
                    .reporter(issueVo.getReporter())
-                   .date(new Date(issueVo.getDate()))
+                   .date(issueVo.getDate())
                    .fixer(issueVo.getFixer())
                    .assignee(issueVo.getAssignee())
                    .priority(issueVo.getPriority())
                    .state(issueVo.getState())
-                   //.memberId(memberEntity)
-                   //.projectId(projectEntity)
+                   .projectId(projectEntity.getProjectId())
+                   .memberId(memberEntity.getMemberId())
                    .build();
            issueRepository.save(issueEntity);
            return new ResponseVo(200,"SUCCESS");
@@ -80,6 +80,18 @@ public class IssueServiceImpl implements IssueService {
            return new ResponseVo(99,"FAIL");
        }
     }
+
+    @Override
+    public ResponseVo updateIssue(IssueVo issueVo) {
+        if(ObjectUtils.isEmpty(issueVo)) {
+            return null;
+        }
+        /** 현재 변경하려는 이슈에 해당하는 프로젝트 조회 */
+        ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
+
+        return null;
+    }
+
 
     @Override
     public ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state) {
