@@ -1,6 +1,7 @@
 package hello.hellospring.controller;
 
 import hello.hellospring.vo.IssueVo;
+import hello.hellospring.vo.MemberVo;
 import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,20 @@ public class IssueController {
     }
 
     /**
+     * 이슈 조회 - PL1이 모든 이슈를 브라우즈 > 본인에게 해당하는 이슈들만 조회
+     * */
+    @PostMapping("/allIssues")
+    public ResponseVo<IssueVo> selectAllIssuesByPL(@RequestBody MemberVo memberVo) {
+        return issueService.selectAllIssuesByPL(memberVo);
+    }
+
+    /**
      * 이슈 조회 - 할당자가 상태로 검색 - WHERE : 할당자 & 상태
      * */
-    @GetMapping("/title/{userId}/{state}")
-    public ResponseVo<IssueVo> findIssueListByUserIdAndState(@PathVariable String userId, @PathVariable String state) {
-        return issueService.getListByUserIdAndState(userId, state);
-    }
+//    @GetMapping("/title/{userId}/{state}")
+//    public ResponseVo<IssueVo> findIssueListByUserIdAndState(@PathVariable String userId, @PathVariable String state) {
+//        return issueService.getListByUserIdAndState(userId, state);
+//    }
 
 }
 

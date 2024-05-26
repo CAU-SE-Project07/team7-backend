@@ -4,6 +4,7 @@ import hello.hellospring.entity.IssueEntity;
 import hello.hellospring.entity.MemberEntity;
 import hello.hellospring.entity.ProjectEntity;
 import hello.hellospring.vo.IssueVo;
+import hello.hellospring.vo.MemberVo;
 import hello.hellospring.vo.ResponseVo;
 import hello.hellospring.repository.CommentRepository;
 import hello.hellospring.repository.IssueRepository;
@@ -129,34 +130,41 @@ public class IssueServiceImpl implements IssueService {
         }
     }
 
-
     @Override
-    public ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state) {
-        /** 사용자 테이블 - 현재 로그인 한 사용자 정보 조회 - 기본키 값 가져오기 위해 */
-        MemberEntity memberEntity = memberRepository.findByUserId(userId);
-        List<IssueEntity> issueEntities = issueRepository.findByMemberId(memberEntity);
-
-        /** 순서 => 중간 관리자 로그인 시 본인에게(Assignee) 할당된 이슈 먼저 조회 => 상태 값 검색해서 조회 */
-        /** 1. 현재 로그인 한 중간 관리자에 할당된 모든 이슈 조회 API */
-
-        List<IssueVo> resultList = new ArrayList<>();
-        issueEntities.stream().map(e -> {
-            IssueVo issueVo = IssueVo.builder()
-                    .issueId(e.getIssueId())
-                    .title(e.getTitle())
-                    .description(e.getDescription())
-                    .reporter(e.getReporter())
-                    .date(e.getDate().toString())
-                    .fixer(e.getFixer())
-                    .assignee(e.getAssignee())
-                    .priority(e.getPriority())
-                    .state(e.getState())
-//                    .userId(e.)
-                    .build();
-            resultList.add(issueVo);
-            return issueVo;
-        }).collect(Collectors.toList());
-        return new ResponseVo<IssueVo>(200,"SUCCESS", resultList);
+    public ResponseVo<IssueVo> selectAllIssuesByPL(MemberVo memberVo) {
+        if(ObjectUtils.isEmpty(memberVo)) {
+            return null;
+        }
+        try {
+            /** 당사자에 대한 사용자 엔티티 조회 */
+            MemberEntity memberEntity = memberRepository.findByUserId(memberVo.getUserId());
+            if(memberEntity == null) {
+                return new ResponseVo<>(11,"사용자가 존재하지 않습니다.");
+            }
+            /** 당사자에 해당하는 모든 이슈 조회 */
+            List<IssueEntity> issueEntities = issueRepository.findByReporter(memberEntity.getUserId());
+            List<IssueVo> resultList = new ArrayList<>();
+            issueEntities.stream().map(e -> {
+                IssueVo issueVo = IssueVo.builder()
+                        .issueId(e.getIssueId())
+                        .title(e.getTitle())
+                        .description(e.getDescription())
+                        .reporter(e.getReporter())
+                        .date(e.getDate())
+                        .fixer(e.getFixer())
+                        .assignee(e.getAssignee())
+                        .priority(e.getPriority())
+                        .state(e.getState())
+                        .build();
+                resultList.add(issueVo);
+                return issueVo;
+            }).collect(Collectors.toList());
+            return new ResponseVo<IssueVo>(200,"SUCCESS",resultList);
+        } catch (Exception e) {
+            return new ResponseVo<>(99,"FAIL");
+        }
     }
+
+
 
 }
