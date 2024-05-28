@@ -66,7 +66,7 @@ public class IssueServiceImpl implements IssueService {
                    .title(issueVo.getTitle())
                    .description(issueVo.getDescription())
                    .reporter(issueVo.getReporter())
-                   .date(new Date(issueVo.getDate()))
+                   .date(issueVo.getDate())
                    .fixer(issueVo.getFixer())
                    .assignee(issueVo.getAssignee())
                    .priority(issueVo.getPriority())
@@ -81,6 +81,49 @@ public class IssueServiceImpl implements IssueService {
        }
     }
 
+    @Override
+    public ResponseVo updateIssue(IssueVo issueVo)
+    {
+        /** 기존 이슈 긁어오기 */
+        IssueEntity origEntity = issueRepository.findByTitle(issueVo.getTitle());
+        /**
+         * 이슈에 대해 dev1을 담당자(assignee)로 지정하며,
+         * 코멘트에 적절한 메시지를 추가함.
+         * 이후 시스템은 해당 이슈의 상태를 assigned로 변경함
+         * 즉, assignee가 바뀌면 state를 assigned로 바꿈**/
+        String changedState = issueVo.getState();
+        String changedAssignee = origEntity.getAssignee();
+        if(issueVo.getAssignee()!=origEntity.getAssignee())
+        {
+            changedState = "ASSIGNED";
+            changedAssignee = issueVo.getAssignee();
+        }
+        /** 전에 Assigned였고 이번에 fixed로 바뀌었으면 assignee를 fixer로 지정
+         * 이외엔 원래의 fixer로 지정**/
+        String chagnedFixer = origEntity.getFixer();
+        if(origEntity.getState()!="ASSIGNED"&&issueVo.getState()=="FIXED")
+        {
+            chagnedFixer = issueVo.getAssignee();
+        }
+
+        IssueEntity updateIssue = IssueEntity.builder().
+                issueId(origEntity.getIssueId()).
+                title(origEntity.getTitle()).
+                description(origEntity.getDescription()).
+                reporter(origEntity.getReporter()).
+                date(issueVo.getDate()).
+                fixer(chagnedFixer).
+                assignee(changedAssignee).
+                priority(issueVo.getPriority()).
+                state(changedState).
+                memberId(origEntity.getMemberId()).
+                projectId(origEntity.getProjectId()).
+                build();
+        issueRepository.save(updateIssue);
+        return new ResponseVo(200,"SUCCESS");
+
+
+    }
     @Override
     public ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state) {
         /** 사용자 테이블 - 현재 로그인 한 사용자 정보 조회 - 기본키 값 가져오기 위해 */

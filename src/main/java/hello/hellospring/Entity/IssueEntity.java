@@ -23,7 +23,7 @@ public class IssueEntity {
     @Column
     private String reporter; //tester, 보고자
     @Column
-    private Date date; // 등록 날짜
+    private String date; // 등록 날짜
     @Column
     private String fixer; //dev, 최종 확인자(최종 권한)
     @Column

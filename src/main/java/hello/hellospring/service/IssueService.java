@@ -13,5 +13,6 @@ import java.util.List;
 
 public interface IssueService {
     ResponseVo insertIssue(IssueVo issueVo);
+    ResponseVo updateIssue(IssueVo issueVo);
     ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state);
 }
