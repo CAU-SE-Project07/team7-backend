@@ -5,6 +5,8 @@ import hello.hellospring.Entity.MemberEntity;
 import hello.hellospring.Enum.Priority;
 import hello.hellospring.Enum.State;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -21,4 +23,6 @@ public interface IssueRepository extends JpaRepository<IssueEntity, Integer> {
     List<IssueEntity>findByPriority(String priority);
     List<IssueEntity>findByState(String state);
     List<IssueEntity> findByMemberId(MemberEntity memberId);
+    @Query("SELECT i FROM ISSUE i WHERE i.assignee = :assignee")
+    List<IssueEntity> findIssuesByAssignee(@Param("assignee") String assignee);
 }

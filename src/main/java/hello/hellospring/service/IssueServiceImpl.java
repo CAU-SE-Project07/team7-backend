@@ -72,7 +72,7 @@ public class IssueServiceImpl implements IssueService {
                    .fixer(issueVo.getFixer())
                    .assignee(issueVo.getAssignee())
                    .priority(issueVo.getPriority())
-                   .state(issueVo.getState())
+                   .state("NEW") //새로 만들어진 이슈는 무조건 NEW
                    .memberId(memberEntity)
                    .projectId(projectEntity)
                    .build();
@@ -96,22 +96,22 @@ public class IssueServiceImpl implements IssueService {
              * 즉, assignee가 바뀌면 state를 assigned로 바꿈**/
             String changedState = issueVo.getState();
             String changedAssignee = origEntity.getAssignee();
-            if (issueVo.getAssignee() != origEntity.getAssignee()) {
+            if (issueVo.getAssignee().equals("string")&&issueVo.getAssignee().equals(origEntity.getAssignee())) {
                 changedState = "ASSIGNED";
                 changedAssignee = issueVo.getAssignee();
             }
             /** 전에 Assigned였고 이번에 fixed로 바뀌었으면 assignee를 fixer로 지정
              * 이외엔 원래의 fixer로 지정**/
             String chagnedFixer = origEntity.getFixer();
-            if (origEntity.getState() != "ASSIGNED" && issueVo.getState() == "FIXED") {
-                chagnedFixer = issueVo.getAssignee();
+            if (origEntity.getState().equals("ASSIGNED") && issueVo.getState().equals("FIXED")) {
+                chagnedFixer = origEntity.getAssignee();
             }
 
             IssueEntity updateIssue = IssueEntity.builder().
                     issueId(origEntity.getIssueId()).
                     title(origEntity.getTitle()).
                     description(origEntity.getDescription()).
-                    reporter(origEntity.getReporter()).
+                    reporter(origEntity.getReporter()). //reporter는 안바뀜
                     date(issueVo.getDate()).
                     fixer(chagnedFixer).
                     assignee(changedAssignee).
@@ -153,12 +153,15 @@ public class IssueServiceImpl implements IssueService {
                     .assignee(e.getAssignee())
                     .priority(e.getPriority())
                     .state(e.getState())
-//                    .userId(e.)
                     .build();
             resultList.add(issueVo);
             return issueVo;
         }).collect(Collectors.toList());
         return new ResponseVo<IssueVo>(200,"SUCCESS", resultList);
+    }
+    @Override
+    public List<IssueEntity> getIssuesByAssignee(String assignee) {
+        return issueRepository.findIssuesByAssignee(assignee);
     }
 
 }

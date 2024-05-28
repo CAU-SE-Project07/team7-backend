@@ -22,5 +22,4 @@ public class IssueVo {
     private String state;
     private String userId;
     private String projectNm; // 프로젝트명(고유값)
-    private CommentVo comment;
 }
