@@ -26,7 +26,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
 
-    public ResponseVo insertComment(CommentReqVo commentReqVo) {
+    public ResponseVo addComment(CommentReqVo commentReqVo) {
         try {
             if(ObjectUtils.isEmpty(commentReqVo)) {
                 return null;
@@ -60,4 +60,9 @@ public class CommentService {
             return new ResponseVo(99, "FAIL");
         }
     }
+
+    public ResponseVo insertComment(CommentReqVo commentReqVo) {
+        return null;
+    }
+
 }

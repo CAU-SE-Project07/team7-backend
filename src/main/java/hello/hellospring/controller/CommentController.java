@@ -18,7 +18,20 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/addComment")
-    public ResponseVo createComment(@RequestBody CommentReqVo commentReqVo) {
+    public ResponseVo addComment(@RequestBody CommentReqVo commentReqVo) {
+        return commentService.addComment(commentReqVo);
+    }
+
+
+    /**
+     * MyBatis - 코멘트 추가
+     * */
+    @PostMapping("/insertComment")
+    public ResponseVo insertComment(@RequestBody CommentReqVo commentReqVo) {
         return commentService.insertComment(commentReqVo);
     }
+
+
 }
+
+
