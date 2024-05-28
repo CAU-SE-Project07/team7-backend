@@ -28,4 +28,13 @@ public class MemberController {
     public ResponseVo updateMember(@RequestBody MemberVo memberVo) {
         return memberService.updateMember(memberVo);
     }
+
+    /***
+     * 민영 - 로그인
+     */
+    @PostMapping("/login")
+    public ResponseVo login(@RequestBody MemberVo memberVo) {
+        return memberService.login(memberVo);
+    }
+
 }

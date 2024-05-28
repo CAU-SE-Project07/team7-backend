@@ -95,4 +95,25 @@ public class MemberServiceImpl implements MemberService {
             return new ResponseVo(99,"FAIL");
         }
     }
+
+    @Override
+    public ResponseVo login(MemberVo memberVo) {
+        if(ObjectUtils.isEmpty(memberVo)) {
+            return null;
+        }
+        try {
+            /** 아이디로 먼저 사용자 조회 */
+            MemberEntity memberEntity = memberRepository.findByUserId(memberVo.getUserId());
+            if(memberEntity == null) {
+                return new ResponseVo(11,"사용자가 존재하지 않습니다.");
+            }
+            if(!memberEntity.getUserId().equals(memberVo.getUserId()) || !memberEntity.getUserPwd().equals(memberVo.getUserPwd())) {
+                return new ResponseVo(12,"아이디 및 비밀번호가 틀렸습니다.");
+            }
+            return new ResponseVo(200,"SUCCESS");
+        } catch (Exception e) {
+            return new ResponseVo(99,"FAIL");
+        }
+
+    }
 }
