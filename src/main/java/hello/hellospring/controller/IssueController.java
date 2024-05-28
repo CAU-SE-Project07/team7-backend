@@ -42,6 +42,14 @@ public class IssueController {
     public ResponseVo<IssueVo> findIssueListByUserIdAndState(@PathVariable String userId, @PathVariable String state) {
         return issueService.getListByUserIdAndState(userId, state);
     }
+    /**
+     * 이슈 수정
+     */
+    @PutMapping("/updateIssue")
+    public ResponseVo updateTicket(@RequestBody IssueVo issueVo)
+    {
+        return issueService.updateIssue(issueVo);
+    }
 
     // 호진 추가
 

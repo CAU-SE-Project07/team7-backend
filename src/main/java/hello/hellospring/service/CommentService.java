@@ -5,5 +5,5 @@ import hello.hellospring.Vo.PriorityVo;
 import hello.hellospring.Vo.ResponseVo;
 
 public interface CommentService {
-    ResponseVo insertComment(CommentVo commentVo);
+    public ResponseVo insertComment(CommentVo commentVo);
 }

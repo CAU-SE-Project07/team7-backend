@@ -57,7 +57,7 @@ public class CommetServiceImpl implements CommentService {
             CommentEntity commentEntity = CommentEntity.builder()
                     .commentId(commentId)
                     .content(commentVo.getContent())
-                    .date(new Date(commentVo.getDate()))
+                    .date(commentVo.getDate())
                     .projectId(projectEntity)
                     .memberId(memberEntity)
                     .issueId(issueEntity)

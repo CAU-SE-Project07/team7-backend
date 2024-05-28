@@ -17,7 +17,7 @@ public class CommentEntity {
     @Column
     private String content; // 댓글 내용
     @Column
-    private Date date; // 등록 날짜
+    private String date; // 등록 날짜
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projectId")
     private ProjectEntity projectId;

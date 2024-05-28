@@ -1,9 +1,6 @@
 package hello.hellospring.config;
 
-import hello.hellospring.repository.CommentRepository;
-import hello.hellospring.repository.IssueRepository;
-import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.ProjectRepository;
+import hello.hellospring.repository.*;
 import hello.hellospring.service.IssueService;
 import hello.hellospring.service.IssueServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +12,13 @@ public class SpringConfig {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
-    public SpringConfig(IssueRepository issueRepository, CommentRepository commentRepository, MemberRepository memberRepository, ProjectRepository projectRepository) {
+    private final PriorityRepository priorityRepository;
+    public SpringConfig(IssueRepository issueRepository, CommentRepository commentRepository, MemberRepository memberRepository, ProjectRepository projectRepository,PriorityRepository priorityRepository) {
         this.issueRepository = issueRepository;
         this.commentRepository = commentRepository;
         this.memberRepository = memberRepository;
         this.projectRepository = projectRepository;
+        this.priorityRepository = priorityRepository;
     }
 
     @Bean

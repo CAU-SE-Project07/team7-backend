@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity(name = "ISSUE")
@@ -39,7 +40,7 @@ public class IssueEntity {
     @JoinColumn(name = "memberId")
     private MemberEntity memberId;
     @OneToMany(mappedBy = "issueId", cascade = CascadeType.REMOVE)
-    private List<CommentEntity> commentEntities = new ArrayList<>();
+    private List<CommentEntity> commentEntities = new LinkedList<>();
 
     public IssueEntity() {}
 }

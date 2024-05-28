@@ -15,10 +15,10 @@ public interface IssueRepository extends JpaRepository<IssueEntity, Integer> {
     IssueEntity findByTitle(String title);
     List<IssueEntity> findByDescription(String description);
     List<IssueEntity> findByReporter(String reporter);
-    List<IssueEntity> findByDate(Date date);
+    List<IssueEntity> findByDate(String date);
     List<IssueEntity> findByFixer(String fixer);
     List<IssueEntity> findByAssignee(String assignee);
-    List<IssueEntity>findByPriority(Priority priority);
-    List<IssueEntity>findByState(State state);
+    List<IssueEntity>findByPriority(String priority);
+    List<IssueEntity>findByState(String state);
     List<IssueEntity> findByMemberId(MemberEntity memberId);
 }
