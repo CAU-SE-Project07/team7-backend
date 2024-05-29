@@ -4,9 +4,7 @@ import hello.hellospring.Entity.CommentEntity;
 import hello.hellospring.Entity.IssueEntity;
 import hello.hellospring.Enum.Priority;
 import hello.hellospring.Enum.State;
-import hello.hellospring.Vo.IssueVo;
-import hello.hellospring.Vo.MemberVo;
-import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.Vo.*;
 import hello.hellospring.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +29,8 @@ public class IssueController {
      * 이슈 추가 - Test 권한자
      * */
     @PostMapping("/addIssue")
-    public ResponseVo createTicket(@RequestBody IssueVo issueVo) {
-        return issueService.insertIssue(issueVo);
+    public ResponseVo createTicket(@RequestBody IssueCreateVo issueCreateVo) {
+        return issueService.insertIssue(issueCreateVo);
     }
 
     /**
@@ -46,9 +44,9 @@ public class IssueController {
      * 이슈 수정
      */
     @PutMapping("/updateIssue")
-    public ResponseVo updateTicket(@RequestBody IssueVo issueVo)
+    public ResponseVo updateTicket(@RequestBody IssueUpdateVo issueUpdateVo)
     {
-        return issueService.updateIssue(issueVo);
+        return issueService.updateIssue(issueUpdateVo);
     }
     /**
      * 특정 assignee 에게 할당된 Issue들만 찾아보기

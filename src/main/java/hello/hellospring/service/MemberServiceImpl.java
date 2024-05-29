@@ -76,6 +76,8 @@ public class MemberServiceImpl implements MemberService {
         try {
             /** 변경하려는 사용자 아이디를 가져와 데이터 조회 */
             MemberEntity memberEntity = memberRepository.findByUserId(memberVo.getUserId());
+            if(memberEntity == null) {return new ResponseVo(99,"NOT FOUND MEMBER[update Member]");}
+            ProjectEntity projectEntity = projectRepository.findByProjectNm(memberVo.getProjectNm());
             /** 멤버에 해당하는 */
             MemberEntity updateMemberEntity = MemberEntity.builder()
                     .memberId(memberEntity.getMemberId())
@@ -88,6 +90,7 @@ public class MemberServiceImpl implements MemberService {
                     .email(memberVo.getEmail())
                     .issueEntities(null)
                     .commentEntities(null)
+                    .projectId(projectEntity)
                     .build();
             memberRepository.save(updateMemberEntity);
             return new ResponseVo(200,"SUCCESS");

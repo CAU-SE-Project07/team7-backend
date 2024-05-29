@@ -4,6 +4,8 @@ import hello.hellospring.Entity.CommentEntity;
 import hello.hellospring.Entity.IssueEntity;
 import hello.hellospring.Entity.MemberEntity;
 import hello.hellospring.Entity.ProjectEntity;
+import hello.hellospring.Vo.IssueCreateVo;
+import hello.hellospring.Vo.IssueUpdateVo;
 import hello.hellospring.Vo.IssueVo;
 import hello.hellospring.Vo.ResponseVo;
 import hello.hellospring.repository.CommentRepository;
@@ -39,7 +41,7 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public ResponseVo insertIssue(IssueVo issueVo) {
+    public ResponseVo insertIssue(IssueCreateVo issueVo) {
         try {
            if(ObjectUtils.isEmpty(issueVo)) {
                return null;
@@ -61,16 +63,18 @@ public class IssueServiceImpl implements IssueService {
            }
            /** 등록하려는 프로젝트 조회 */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
+            if(projectEntity == null) {return new ResponseVo(99,"FAILED, Project not found. [InsertIssue]");}
             /** 사용자 찾기 */
             MemberEntity memberEntity = memberRepository.findByUserId(issueVo.getUserId());
+            if(memberEntity == null) {return new ResponseVo(99,"FAILED, Member not found. [InsertIssue]");}
            IssueEntity issueEntity = IssueEntity.builder()
                    .issueId(issueId)
                    .title(issueVo.getTitle())
                    .description(issueVo.getDescription())
-                   .reporter(issueVo.getReporter())
+                   .reporter(memberEntity.getUserNm())//새로 만든 사람이 무조건 reporter
                    .date(issueVo.getDate())
-                   .fixer(issueVo.getFixer())
-                   .assignee(issueVo.getAssignee())
+                   .fixer(null)
+                   .assignee(null)
                    .priority(issueVo.getPriority())
                    .state("NEW") //새로 만들어진 이슈는 무조건 NEW
                    .memberId(memberEntity)
@@ -84,7 +88,7 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public ResponseVo updateIssue(IssueVo issueVo)
+    public ResponseVo updateIssue(IssueUpdateVo issueVo)
     {
         try {
             /** 기존 이슈 긁어오기 */
@@ -96,7 +100,9 @@ public class IssueServiceImpl implements IssueService {
              * 즉, assignee가 바뀌면 state를 assigned로 바꿈**/
             String changedState = issueVo.getState();
             String changedAssignee = origEntity.getAssignee();
-            if (issueVo.getAssignee().equals("string")&&issueVo.getAssignee().equals(origEntity.getAssignee())) {
+            if (!issueVo.getAssignee().equals("string")||!issueVo.getAssignee().equals(origEntity.getAssignee())) {
+                if(memberRepository.findByUserNm(issueVo.getAssignee())==null)
+                    {return new ResponseVo(99,"FAILED, Member not found. [UpdateIssue]");}
                 changedState = "ASSIGNED";
                 changedAssignee = issueVo.getAssignee();
             }
