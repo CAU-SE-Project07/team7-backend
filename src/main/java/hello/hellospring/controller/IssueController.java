@@ -29,7 +29,7 @@ public class IssueController {
      * 이슈 추가 - Test 권한자
      * */
     @PostMapping("/addIssue")
-    public ResponseVo createTicket(@RequestBody IssueCreateVo issueCreateVo) {
+    public ResponseVo<IssueVo> createTicket(@RequestBody IssueCreateVo issueCreateVo) {
         return issueService.insertIssue(issueCreateVo);
     }
 
@@ -44,7 +44,7 @@ public class IssueController {
      * 이슈 수정
      */
     @PutMapping("/updateIssue")
-    public ResponseVo updateTicket(@RequestBody IssueUpdateVo issueUpdateVo)
+    public ResponseVo<IssueVo> updateTicket(@RequestBody IssueUpdateVo issueUpdateVo)
     {
         return issueService.updateIssue(issueUpdateVo);
     }

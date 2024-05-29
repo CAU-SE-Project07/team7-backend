@@ -38,7 +38,7 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public ResponseVo insertIssue(IssueCreateVo issueVo) {
+    public ResponseVo<IssueVo> insertIssue(IssueCreateVo issueVo) {
         try {
             if (ObjectUtils.isEmpty(issueVo)) {
                 return null;
@@ -46,7 +46,7 @@ public class IssueServiceImpl implements IssueService {
             /** 등록하려는 이슈 제목 중복 체크 */
             IssueEntity isExistedIssueEntity = issueRepository.findByTitle(issueVo.getTitle());
             if (isExistedIssueEntity != null) {
-                return new ResponseVo(11, "Title is duplicated.");
+                return new ResponseVo<IssueVo>(11, "Title is duplicated.");
             }
             /** 이슈 기본키 : issueId => 고유값 처리 */
             int issueId = 1;
@@ -61,12 +61,12 @@ public class IssueServiceImpl implements IssueService {
             /** 등록하려는 프로젝트 조회 */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
             if (projectEntity == null) {
-                return new ResponseVo(99, "FAILED, Project not found. [InsertIssue]");
+                return new ResponseVo<IssueVo>(99, "FAILED, Project not found. [InsertIssue]");
             }
             /** 사용자 찾기 */
             MemberEntity memberEntity = memberRepository.findByUserId(issueVo.getUserId());
             if (memberEntity == null) {
-                return new ResponseVo(99, "FAILED, Member not found. [InsertIssue]");
+                return new ResponseVo<IssueVo>(99, "FAILED, Member not found. [InsertIssue]");
             }
             IssueEntity issueEntity = IssueEntity.builder()
                     .issueId(issueId)
@@ -82,20 +82,29 @@ public class IssueServiceImpl implements IssueService {
                     .projectId(projectEntity)
                     .build();
             issueRepository.save(issueEntity);
-            return new ResponseVo(200, "SUCCESS");
+
+            List<IssueVo> resultList = new ArrayList<>();
+            IssueVo issueVo1 = convertToVo(issueEntity);
+            resultList.add(issueVo1);
+
+            return new ResponseVo<IssueVo>(200, "SUCCESS", resultList);
         } catch (Exception e) {
-            return new ResponseVo(99, "FAIL");
+            return new ResponseVo<IssueVo>(99, "FAIL");
         }
     }
 
     @Override
-    public ResponseVo updateIssue(IssueUpdateVo issueVo) {
+    public ResponseVo<IssueVo> updateIssue(IssueUpdateVo issueVo) {
         try {
             /** 기존 이슈 긁어오기 */
             IssueEntity origEntity = issueRepository.findByTitle(issueVo.getTitle());
             if(origEntity==null)
             {
-                return new ResponseVo(99, "FAILED, Issue not found. [UpdateIssue]");
+                return new ResponseVo<IssueVo>(99, "FAILED, Issue not found. [UpdateIssue]");
+            }
+            if(!issueVo.getProjectNm().equals(origEntity.getProjectId().getProjectNm()))
+            {
+                return new ResponseVo<IssueVo>(99, "FAILED, Issue not found in that project. [UpdateIssue]");
             }
             /**
              * 이슈에 대해 dev1을 담당자(assignee)로 지정하며,
@@ -104,9 +113,9 @@ public class IssueServiceImpl implements IssueService {
              * 즉, assignee가 바뀌면 state를 assigned로 바꿈**/
             String changedState = issueVo.getState();
             String changedAssignee = origEntity.getAssignee();
-            if (!issueVo.getAssignee().equals("string") && !issueVo.getAssignee().equals(origEntity.getAssignee())) {
+            if (!issueVo.getAssignee().isEmpty() && !issueVo.getAssignee().equals(origEntity.getAssignee())) {
                 if (memberRepository.findByUserNm(issueVo.getAssignee()) == null) {
-                    return new ResponseVo(99, "FAILED, Member not found. [UpdateIssue]");
+                    return new ResponseVo<IssueVo>(99, "FAILED, Member " +issueVo.getAssignee() +" not found. [UpdateIssue]");
                 }
                 changedState = "ASSIGNED";
                 changedAssignee = issueVo.getAssignee();
@@ -117,16 +126,42 @@ public class IssueServiceImpl implements IssueService {
             if (origEntity.getState().equals("ASSIGNED") && issueVo.getState().equals("FIXED")) {
                 chagnedFixer = origEntity.getAssignee();
             }
+            /**
+             * 값이 들어오면 바뀌고 아니면 그대로 DESCRIPTION
+             * */
+            String des=origEntity.getDescription();
+            if(!issueVo.getDescription().isEmpty())
+            {
+                des = issueVo.getDescription();
+            }
+            /**
+             * 값이 들어오면 바뀌고 아니면 그대로 TITLE
+             * */
+            String tit = origEntity.getTitle();
+            if(!issueVo.getTitle().isEmpty())
+            {
+                tit = issueVo.getTitle();
+            }
+            /**
+             * 값이 들어오면 바뀌고 아니면 그대로 PRIORITY
+             * */
+            String priority = origEntity.getPriority();
+            if(!issueVo.getPriority().isEmpty())
+            {
+                priority = issueVo.getPriority();
+            }
+
+
 
             IssueEntity updateIssue = IssueEntity.builder().
                     issueId(origEntity.getIssueId()).
-                    title(origEntity.getTitle()).
-                    description(origEntity.getDescription()).
+                    title(tit).
+                    description(des).
                     reporter(origEntity.getReporter()). //reporter는 안바뀜
-                            date(issueVo.getDate()).
+                            date(origEntity.getDate()).
                     fixer(chagnedFixer).
                     assignee(changedAssignee).
-                    priority(issueVo.getPriority()).
+                    priority(priority).
                     state(changedState).
                     memberId(origEntity.getMemberId()).
                     projectId(origEntity.getProjectId()).
@@ -134,12 +169,14 @@ public class IssueServiceImpl implements IssueService {
                     build();
             //int addingCommentId = origEntity.getCommentEntities().getFirst().getCommentId();
             //addingCommentId++;
-
+            List<IssueVo> resultList = new ArrayList<>();
+            IssueVo issueVo1 = convertToVo(updateIssue);
+            resultList.add(issueVo1);
 
             issueRepository.save(updateIssue);
-            return new ResponseVo(200, "SUCCESS");
+            return new ResponseVo<IssueVo>(200, "SUCCESS",resultList);
         } catch (Exception e) {
-            return new ResponseVo(99, "FAIL");
+            return new ResponseVo<IssueVo>(99, "FAIL"+e.toString());
         }
     }
 

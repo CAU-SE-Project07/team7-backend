@@ -11,7 +11,6 @@ public class IssueCreateVo {
     private String description;
     private String date;
     private String priority;
-    private String state;
     private String userId;
     private String projectNm; // 프로젝트명(고유값)
 }

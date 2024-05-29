@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface IssueService {
-    ResponseVo insertIssue(IssueCreateVo issueVo);
-    ResponseVo updateIssue(IssueUpdateVo issueVo);
+    ResponseVo<IssueVo> insertIssue(IssueCreateVo issueVo);
+    ResponseVo<IssueVo> updateIssue(IssueUpdateVo issueVo);
     ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state);
     IssueVo convertToVo(IssueEntity issueEntity);
 

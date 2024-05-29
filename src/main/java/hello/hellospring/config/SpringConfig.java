@@ -13,12 +13,15 @@ public class SpringConfig {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final PriorityRepository priorityRepository;
-    public SpringConfig(IssueRepository issueRepository, CommentRepository commentRepository, MemberRepository memberRepository, ProjectRepository projectRepository,PriorityRepository priorityRepository) {
+    private final IssueService issueService;
+    public SpringConfig(IssueRepository issueRepository, CommentRepository commentRepository, MemberRepository memberRepository,
+                        ProjectRepository projectRepository,PriorityRepository priorityRepository, IssueService issueService) {
         this.issueRepository = issueRepository;
         this.commentRepository = commentRepository;
         this.memberRepository = memberRepository;
         this.projectRepository = projectRepository;
         this.priorityRepository = priorityRepository;
+        this.issueService = issueService;
     }
 
     @Bean
