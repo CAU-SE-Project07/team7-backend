@@ -6,4 +6,5 @@ import hello.hellospring.Vo.ResponseVo;
 public interface MemberService {
     ResponseVo insertMember(MemberVo memberVo);
     ResponseVo updateMember(MemberVo memberVo);
+    ResponseVo login(MemberVo memberVo);
 }
