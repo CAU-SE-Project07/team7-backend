@@ -40,7 +40,7 @@ public class IssueEntity {
     @JoinColumn(name = "memberId")
     private MemberEntity memberId;
     @OneToMany(mappedBy = "issueId", cascade = CascadeType.REMOVE)
-    private List<CommentEntity> commentEntities = new LinkedList<>();
+    private List<CommentEntity> commentEntities ;
 
     public IssueEntity() {}
     public boolean isResolved(){return state.equals("RESOLVED");}

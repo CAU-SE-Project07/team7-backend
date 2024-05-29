@@ -93,6 +93,10 @@ public class IssueServiceImpl implements IssueService {
         try {
             /** 기존 이슈 긁어오기 */
             IssueEntity origEntity = issueRepository.findByTitle(issueVo.getTitle());
+            if(origEntity==null)
+            {
+                return new ResponseVo(99, "FAILED, Issue not found. [UpdateIssue]");
+            }
             /**
              * 이슈에 대해 dev1을 담당자(assignee)로 지정하며,
              * 코멘트에 적절한 메시지를 추가함.

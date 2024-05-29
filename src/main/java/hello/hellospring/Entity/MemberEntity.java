@@ -1,10 +1,7 @@
 package hello.hellospring.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
+@ToString(exclude = "projectId")
 public class MemberEntity {
     @Id
     private int memberId;
@@ -34,9 +32,9 @@ public class MemberEntity {
     @JoinColumn(name = "projectId")
     private ProjectEntity projectId;
     @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
-    private List<IssueEntity> issueEntities = new ArrayList<>();
+    private List<IssueEntity> issueEntities ;
     @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
-    private List<CommentEntity> commentEntities = new ArrayList<>();
+    private List<CommentEntity> commentEntities ;
 
     public MemberEntity() {};
 }
