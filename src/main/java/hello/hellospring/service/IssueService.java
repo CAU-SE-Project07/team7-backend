@@ -13,5 +13,7 @@ public interface IssueService {
     ResponseVo insertIssue(IssueCreateVo issueVo);
     ResponseVo updateIssue(IssueUpdateVo issueVo);
     ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state);
-    public List<IssueEntity> getIssuesByAssignee(String assignee);
+    IssueVo convertToVo(IssueEntity issueEntity);
+
+    public List<IssueVo> getIssuesByAssignee(String assignee);
 }

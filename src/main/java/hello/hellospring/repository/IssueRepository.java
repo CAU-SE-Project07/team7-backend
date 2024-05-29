@@ -23,6 +23,6 @@ public interface IssueRepository extends JpaRepository<IssueEntity, Integer> {
     List<IssueEntity>findByPriority(String priority);
     List<IssueEntity>findByState(String state);
     List<IssueEntity> findByMemberId(MemberEntity memberId);
-    @Query("SELECT i FROM ISSUE i WHERE i.assignee = :assignee")
+    @Query("SELECT i FROM ISSUE i WHERE i.assignee = :assignee AND i.state = 'ASSIGNED'")
     List<IssueEntity> findIssuesByAssignee(@Param("assignee") String assignee);
 }

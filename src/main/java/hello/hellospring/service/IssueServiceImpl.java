@@ -1,6 +1,5 @@
 package hello.hellospring.service;
 
-import hello.hellospring.Entity.CommentEntity;
 import hello.hellospring.Entity.IssueEntity;
 import hello.hellospring.Entity.MemberEntity;
 import hello.hellospring.Entity.ProjectEntity;
@@ -17,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import javax.xml.stream.events.Comment;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,53 +40,56 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public ResponseVo insertIssue(IssueCreateVo issueVo) {
         try {
-           if(ObjectUtils.isEmpty(issueVo)) {
-               return null;
-           }
-           /** 등록하려는 이슈 제목 중복 체크 */
-           IssueEntity isExistedIssueEntity = issueRepository.findByTitle(issueVo.getTitle());
-           if(isExistedIssueEntity != null) {
-               return new ResponseVo(11,"Title is duplicated.");
-           }
+            if (ObjectUtils.isEmpty(issueVo)) {
+                return null;
+            }
+            /** 등록하려는 이슈 제목 중복 체크 */
+            IssueEntity isExistedIssueEntity = issueRepository.findByTitle(issueVo.getTitle());
+            if (isExistedIssueEntity != null) {
+                return new ResponseVo(11, "Title is duplicated.");
+            }
             /** 이슈 기본키 : issueId => 고유값 처리 */
             int issueId = 1;
             int count = issueRepository.findAll().size();
-            if(count > 0) {
+            if (count > 0) {
                 issueId = count + 1;
             }
-           /** 우선순위 처리 */
-           if(issueVo.getPriority() == null || issueVo.getPriority().equals("")) {
-               issueVo.setPriority("MAJOR");
-           }
-           /** 등록하려는 프로젝트 조회 */
+            /** 우선순위 처리 */
+            if (issueVo.getPriority() == null || issueVo.getPriority().equals("")) {
+                issueVo.setPriority("MAJOR");
+            }
+            /** 등록하려는 프로젝트 조회 */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
-            if(projectEntity == null) {return new ResponseVo(99,"FAILED, Project not found. [InsertIssue]");}
+            if (projectEntity == null) {
+                return new ResponseVo(99, "FAILED, Project not found. [InsertIssue]");
+            }
             /** 사용자 찾기 */
             MemberEntity memberEntity = memberRepository.findByUserId(issueVo.getUserId());
-            if(memberEntity == null) {return new ResponseVo(99,"FAILED, Member not found. [InsertIssue]");}
-           IssueEntity issueEntity = IssueEntity.builder()
-                   .issueId(issueId)
-                   .title(issueVo.getTitle())
-                   .description(issueVo.getDescription())
-                   .reporter(memberEntity.getUserNm())//새로 만든 사람이 무조건 reporter
-                   .date(issueVo.getDate())
-                   .fixer(null)
-                   .assignee(null)
-                   .priority(issueVo.getPriority())
-                   .state("NEW") //새로 만들어진 이슈는 무조건 NEW
-                   .memberId(memberEntity)
-                   .projectId(projectEntity)
-                   .build();
-           issueRepository.save(issueEntity);
-           return new ResponseVo(200,"SUCCESS");
-       } catch (Exception e) {
-           return new ResponseVo(99,"FAIL");
-       }
+            if (memberEntity == null) {
+                return new ResponseVo(99, "FAILED, Member not found. [InsertIssue]");
+            }
+            IssueEntity issueEntity = IssueEntity.builder()
+                    .issueId(issueId)
+                    .title(issueVo.getTitle())
+                    .description(issueVo.getDescription())
+                    .reporter(memberEntity.getUserNm())//새로 만든 사람이 무조건 reporter
+                    .date(issueVo.getDate())
+                    .fixer(null)
+                    .assignee(null)
+                    .priority(issueVo.getPriority())
+                    .state("NEW") //새로 만들어진 이슈는 무조건 NEW
+                    .memberId(memberEntity)
+                    .projectId(projectEntity)
+                    .build();
+            issueRepository.save(issueEntity);
+            return new ResponseVo(200, "SUCCESS");
+        } catch (Exception e) {
+            return new ResponseVo(99, "FAIL");
+        }
     }
 
     @Override
-    public ResponseVo updateIssue(IssueUpdateVo issueVo)
-    {
+    public ResponseVo updateIssue(IssueUpdateVo issueVo) {
         try {
             /** 기존 이슈 긁어오기 */
             IssueEntity origEntity = issueRepository.findByTitle(issueVo.getTitle());
@@ -100,9 +100,10 @@ public class IssueServiceImpl implements IssueService {
              * 즉, assignee가 바뀌면 state를 assigned로 바꿈**/
             String changedState = issueVo.getState();
             String changedAssignee = origEntity.getAssignee();
-            if (!issueVo.getAssignee().equals("string")||!issueVo.getAssignee().equals(origEntity.getAssignee())) {
-                if(memberRepository.findByUserNm(issueVo.getAssignee())==null)
-                    {return new ResponseVo(99,"FAILED, Member not found. [UpdateIssue]");}
+            if (!issueVo.getAssignee().equals("string") && !issueVo.getAssignee().equals(origEntity.getAssignee())) {
+                if (memberRepository.findByUserNm(issueVo.getAssignee()) == null) {
+                    return new ResponseVo(99, "FAILED, Member not found. [UpdateIssue]");
+                }
                 changedState = "ASSIGNED";
                 changedAssignee = issueVo.getAssignee();
             }
@@ -118,7 +119,7 @@ public class IssueServiceImpl implements IssueService {
                     title(origEntity.getTitle()).
                     description(origEntity.getDescription()).
                     reporter(origEntity.getReporter()). //reporter는 안바뀜
-                    date(issueVo.getDate()).
+                            date(issueVo.getDate()).
                     fixer(chagnedFixer).
                     assignee(changedAssignee).
                     priority(issueVo.getPriority()).
@@ -133,11 +134,11 @@ public class IssueServiceImpl implements IssueService {
 
             issueRepository.save(updateIssue);
             return new ResponseVo(200, "SUCCESS");
-        }catch(Exception e)
-        {
-            return new ResponseVo(99,"FAIL");
+        } catch (Exception e) {
+            return new ResponseVo(99, "FAIL");
         }
     }
+
     @Override
     public ResponseVo<IssueVo> getListByUserIdAndState(String userId, String state) {
         /** 사용자 테이블 - 현재 로그인 한 사용자 정보 조회 - 기본키 값 가져오기 위해 */
@@ -163,11 +164,31 @@ public class IssueServiceImpl implements IssueService {
             resultList.add(issueVo);
             return issueVo;
         }).collect(Collectors.toList());
-        return new ResponseVo<IssueVo>(200,"SUCCESS", resultList);
+        return new ResponseVo<IssueVo>(200, "SUCCESS", resultList);
     }
+
     @Override
-    public List<IssueEntity> getIssuesByAssignee(String assignee) {
-        return issueRepository.findIssuesByAssignee(assignee);
+    public IssueVo convertToVo(IssueEntity issueEntity) {
+        return IssueVo.builder()
+                .issueId(issueEntity.getIssueId())
+                .title(issueEntity.getTitle())
+                .description(issueEntity.getDescription())
+                .reporter(issueEntity.getReporter())
+                .date(issueEntity.getDate())
+                .fixer(issueEntity.getFixer())
+                .assignee(issueEntity.getAssignee())
+                .priority(issueEntity.getPriority())
+                .state(issueEntity.getState())
+                .build();
     }
+
+        @Override
+        public List<IssueVo> getIssuesByAssignee(String assignee) {
+            List<IssueEntity> issueEntities = issueRepository.findIssuesByAssignee(assignee);
+            return issueEntities.stream()
+                    .map(this::convertToVo)
+                    .collect(Collectors.toList());
+        }
+
 
 }

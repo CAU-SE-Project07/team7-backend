@@ -52,7 +52,7 @@ public class IssueController {
      * 특정 assignee 에게 할당된 Issue들만 찾아보기
      * */
     @GetMapping("/assignee/{assignee}")
-    public List<IssueEntity> getIssuesByAssignee(@PathVariable String assignee) {
+    public List<IssueVo> getIssuesByAssignee(@PathVariable String assignee) {
         return issueService.getIssuesByAssignee(assignee);
     }
 
