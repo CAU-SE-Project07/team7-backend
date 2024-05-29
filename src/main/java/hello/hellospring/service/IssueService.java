@@ -16,4 +16,5 @@ public interface IssueService {
     IssueVo convertToVo(IssueEntity issueEntity);
 
     public List<IssueVo> getIssuesByAssignee(String assignee);
+    public String recommendAssignee(String issueId);
 }

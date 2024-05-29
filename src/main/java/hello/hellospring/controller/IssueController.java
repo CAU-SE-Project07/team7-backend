@@ -55,6 +55,14 @@ public class IssueController {
     public List<IssueVo> getIssuesByAssignee(@PathVariable String assignee) {
         return issueService.getIssuesByAssignee(assignee);
     }
+    /**
+     * 실험단계
+     * 유사한 문제 해결 많이 했던 Assignee 추천
+     * */
+    @GetMapping("/recommend-assignee/{issueTitle}")
+    public String recommendAssignee(@PathVariable String issueTitle) {
+        return issueService.recommendAssignee(issueTitle);
+    }
 
 }
 

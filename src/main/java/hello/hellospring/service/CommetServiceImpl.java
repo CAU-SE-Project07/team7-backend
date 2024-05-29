@@ -52,7 +52,7 @@ public class CommetServiceImpl implements CommentService {
             /** 코멘트를 등록하려는 사용자 엔티티 조회 */
             MemberEntity memberEntity = memberRepository.findByUserId(commentVo.getUserId());
             /** 코멘트를 등록하려는 이슈 엔티티 조회 */
-            IssueEntity issueEntity = issueRepository.findByTitle(commentVo.getTitle());
+            IssueEntity issueEntity = issueRepository.findByTitle(commentVo.getIssueTitle());
             /** 코멘트 데이터 insert */
             CommentEntity commentEntity = CommentEntity.builder()
                     .commentId(commentId)

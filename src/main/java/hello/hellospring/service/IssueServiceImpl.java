@@ -7,6 +7,7 @@ import hello.hellospring.Vo.IssueCreateVo;
 import hello.hellospring.Vo.IssueUpdateVo;
 import hello.hellospring.Vo.IssueVo;
 import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.recommendation.PythonScriptExecutor;
 import hello.hellospring.repository.CommentRepository;
 import hello.hellospring.repository.IssueRepository;
 import hello.hellospring.repository.MemberRepository;
@@ -16,8 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -189,6 +189,42 @@ public class IssueServiceImpl implements IssueService {
                     .map(this::convertToVo)
                     .collect(Collectors.toList());
         }
+        @Override
+    public String recommendAssignee(String issueTitle) {
+        IssueEntity currentIssue = issueRepository.findByTitle(issueTitle);
+        if (currentIssue == null) {
+            return "Issue not found";
+        }
+
+        String issueDescription = currentIssue.getDescription();
+        List<IssueEntity> allIssues = issueRepository.findAll();
+
+        Map<String, Double> assigneeRelevanceScore = new HashMap<>();
+
+        for (IssueEntity issue : allIssues) {
+            if (issue.isResolved()||issue.isClosed()) {
+                double similarity = 0.0;
+                System.out.println("oh my god!");
+                try {
+                    similarity = PythonScriptExecutor.calculateSimilarity(issueDescription, issue.getDescription());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Issue ID: " + issue.getIssueId() + " | Similarity: " + similarity + " | Assignee: " + issue.getAssignee());
+                if (similarity!=0) {
+                    String assignee = issue.getAssignee();
+                    assigneeRelevanceScore.put(assignee, assigneeRelevanceScore.getOrDefault(assignee, 0.0) + similarity);
+                }
+            }
+        }
+    System.out.println(assigneeRelevanceScore.size());
+
+
+            Optional<Map.Entry<String, Double>> bestAssignee = assigneeRelevanceScore.entrySet().stream()
+                    .max(Map.Entry.comparingByValue());
+
+            return bestAssignee.map(Map.Entry::getKey).orElse("No suitable assignee found");
+    }
 
 
 }

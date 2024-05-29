@@ -43,4 +43,6 @@ public class IssueEntity {
     private List<CommentEntity> commentEntities = new LinkedList<>();
 
     public IssueEntity() {}
+    public boolean isResolved(){return state.equals("RESOLVED");}
+    public boolean isClosed(){return state.equals("CLOSED");}
 }
