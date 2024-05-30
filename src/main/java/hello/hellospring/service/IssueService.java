@@ -17,4 +17,6 @@ public interface IssueService {
 
     public List<IssueVo> getIssuesByAssignee(String assignee);
     public String recommendAssignee(String issueId);
+    public List<IssueVo> getIssuesByProjectName(String projectNm);
 }
+

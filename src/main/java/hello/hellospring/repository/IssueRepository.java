@@ -15,15 +15,8 @@ import java.util.List;
 @Repository
 public interface IssueRepository extends JpaRepository<IssueEntity, Integer> {
     IssueEntity findByTitle(String title);
-    List<IssueEntity> findByDescription(String description);
-    List<IssueEntity> findByReporter(String reporter);
-    List<IssueEntity> findByDate(String date);
-    List<IssueEntity> findByFixer(String fixer);
-    List<IssueEntity> findByAssignee(String assignee);
-    List<IssueEntity>findByPriority(String priority);
-    List<IssueEntity>findByState(String state);
     List<IssueEntity> findByMemberId(MemberEntity memberId);
     @Query("SELECT i FROM ISSUE i WHERE i.assignee = :assignee AND i.state = 'ASSIGNED'")
     List<IssueEntity> findIssuesByAssignee(@Param("assignee") String assignee);
-
+    List<IssueEntity> findByProjectId_ProjectNm(String projectNm);
 }
