@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hello.hellospring.mapper.MemberMapper">
+
+    <!--  사용자 추가  -->
+    <insert id="addMember" parameterType="hello.hellospring.vo.MemberReqVo" useGeneratedKeys="true" keyColumn="member_id" keyProperty="memberId">
+        insert into member(user_id, user_nm, user_pwd, user_chk_pwd, user_roles, nick_nm, email, project_id)
+        values(#{userId}, #{userNm}, #{userPwd}, #{userChkPwd}, #{userRoles}, #{nickNm}, #{email}, #{projectId});
+    </insert>
+
+    <!--  사용자 조회(검색별 가능)  -->
+    <select id="selectMembers" parameterType="hello.hellospring.vo.MemberReqVo" resultType="hello.hellospring.vo.MemberResVo">
+        select *
+        from member
+        <where>
+            <!-- 기본키 존재 시 -->
+            <if test="memberId > 0">
+                and member_id = #{memberId}
+            </if>
+            <!-- 사용자 아이디 존재 시 -->
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+        </where>
+        ;
+    </select>
+
+
+    <!--  사용자 변경  -->
+    <update id="updateMember" parameterType="hello.hellospring.vo.MemberReqVo">
+        UPDATE MEMBER
+        SET USER_NM = #{userNm}, USER_PWD = #{userPwd}, USER_CHK_PWD = #{userChkPwd}, USER_ROLES = #{userRoles}, NICK_NM = #{nickNm}, EMAIL = #{email}
+        WHERE MEMBER_ID = #{memberId};
+    </update>
+
+</mapper>

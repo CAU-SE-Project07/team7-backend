@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hello.hellospring.mapper.IssueMapper">
+
+    <!--  이슈 조회 > 값이 있을 시 조건에 해당하는 리스트 출력  -->
+    <select id="selectIssues" parameterType="hello.hellospring.vo.IssueReqVo" resultType="hello.hellospring.vo.IssueResVo">
+        select *
+        from issue
+        <where>
+            <!-- 기본키 존재할 시 -->
+            <if test="issueId != null">
+                and issue_id = #{issueId}
+            </if>
+            <!-- title 존재할 시 -->
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <!-- reporter 존재할 시 -->
+            <if test="reporter != null and reporter != ''">
+                and reporter = #{reporter}
+            </if>
+            <!-- fixer 존재할 시 -->
+            <if test="fixer != null and fixer != ''">
+                and fixer = #{fixer}
+            </if>
+            <!-- assignee 존재할 시 -->
+            <if test="assignee != null and assignee != ''">
+                and assignee = #{assignee}
+            </if>
+            <!-- state 존재할 시 -->
+            <if test="state != null and state != ''">
+                and state = #{state}
+            </if>
+            <!-- userRoles 존재할 시 -->
+            <if test="userRoles != null and userRoles != ''">
+                <choose>
+                    <when test="userRoles.equals('USER')">
+                        where reporter = #{userId}
+                    </when>
+                    <when test="userRoles.equals('ADMIN')">
+                        where assignee = #{userId}
+                    </when>
+                </choose>
+            </if>
+        </where>
+        ;
+    </select>
+
+    <!--  이슈 변경  -->
+    <update id="updateIssue" parameterType="hello.hellospring.vo.IssueReqVo">
+        update issue
+        set state = #{state}, reporter = #{reporter}
+        where issue_id = #{issueId}
+        ;
+    </update>
+
+    <!--  이슈 추가  -->
+    <insert id="addIssue" parameterType="hello.hellospring.vo.IssueReqVo" useGeneratedKeys="true" keyColumn="issue_id" keyProperty="issueId">
+        insert into issue(title, description, reporter, date, fixer, assignee, priority, state, project_id, member_id)
+        values(#{title}, #{description}, #{reporter}, sysdate(), #{fixer}, #{assignee}, #{priority}, #{state}, #{projectId}, #{memberId})
+        ;
+    </insert>
+
+</mapper>
