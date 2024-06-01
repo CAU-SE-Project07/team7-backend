@@ -59,9 +59,9 @@ public class IssueController {
      * 실험단계
      * 유사한 문제 해결 많이 했던 Assignee 추천
      * */
-    @GetMapping("/recommend-assignee/{issueTitle}")
-    public String recommendAssignee(@PathVariable String issueTitle) {
-        return issueService.recommendAssignee(issueTitle);
+    @GetMapping("/recommend-assignee/{issueTitle}/{projectNm}")
+    public String recommendAssignee(@PathVariable String issueTitle, @PathVariable String projectNm) {
+        return issueService.recommendAssignee(issueTitle,projectNm);
     }
     /**해당 프로젝트에*/
     @GetMapping("/project/name/{projectNm}")

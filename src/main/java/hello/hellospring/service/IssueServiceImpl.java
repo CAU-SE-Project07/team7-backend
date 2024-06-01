@@ -229,8 +229,13 @@ public class IssueServiceImpl implements IssueService {
                     .collect(Collectors.toList());
         }
         @Override
-    public String recommendAssignee(String issueTitle) {
-        IssueEntity currentIssue = issueRepository.findByTitle(issueTitle);
+    public String recommendAssignee(String issueTitle,String projectNm) {
+        ProjectEntity projectEntity = projectRepository.findByProjectNm(projectNm);
+        if(projectEntity == null)
+        {
+            return "Project not found";
+        }
+        IssueEntity currentIssue = issueRepository.findByProjectIdAndTitle(projectEntity,issueTitle);
         if (currentIssue == null) {
             return "Issue not found";
         }

@@ -2,6 +2,7 @@ package hello.hellospring.service;
 
 import hello.hellospring.Entity.CommentEntity;
 import hello.hellospring.Entity.IssueEntity;
+import hello.hellospring.Entity.ProjectEntity;
 import hello.hellospring.Enum.Priority;
 import hello.hellospring.Enum.State;
 import hello.hellospring.Vo.*;
@@ -16,7 +17,7 @@ public interface IssueService {
     IssueVo convertToVo(IssueEntity issueEntity);
 
     public List<IssueVo> getIssuesByAssignee(String assignee);
-    public String recommendAssignee(String issueId);
+    public String recommendAssignee(String issueId,String ProjectNm);
     public List<IssueVo> getIssuesByProjectName(String projectNm);
 }
 
