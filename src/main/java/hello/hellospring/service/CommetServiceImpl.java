@@ -49,10 +49,22 @@ public class CommetServiceImpl implements CommentService {
             }
             /** 코멘트를 등록하려는 프로젝트 엔티티 조회 */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(commentVo.getProjectNm());
+            if(projectEntity==null)
+            {
+                return new ResponseVo(99, "FAIL : No project found [insert comment fail]");
+            }
             /** 코멘트를 등록하려는 사용자 엔티티 조회 */
             MemberEntity memberEntity = memberRepository.findByUserId(commentVo.getUserId());
+            if(memberEntity==null)
+            {
+                return new ResponseVo(99, "FAIL : No user found [insert comment fail]");
+            }
             /** 코멘트를 등록하려는 이슈 엔티티 조회 */
             IssueEntity issueEntity = issueRepository.findByTitle(commentVo.getIssueTitle());
+            if(issueEntity==null)
+            {
+                return new ResponseVo(99, "FAIL : No issue found [insert comment fail]");
+            }
             /** 코멘트 데이터 insert */
             CommentEntity commentEntity = CommentEntity.builder()
                     .commentId(commentId)
