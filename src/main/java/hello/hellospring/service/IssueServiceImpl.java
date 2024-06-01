@@ -25,14 +25,12 @@ import java.util.stream.Collectors;
 public class IssueServiceImpl implements IssueService {
 
     private final IssueRepository issueRepository;
-    private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
-
+    private PythonScriptExecutor pythonScriptExecutor = new PythonScriptExecutor();
     @Autowired
     public IssueServiceImpl(IssueRepository issueRepository, CommentRepository commentRepository, MemberRepository memberRepository, ProjectRepository projectRepository) {
         this.issueRepository = issueRepository;
-        this.commentRepository = commentRepository;
         this.memberRepository = memberRepository;
         this.projectRepository = projectRepository;
     }
@@ -231,8 +229,13 @@ public class IssueServiceImpl implements IssueService {
                     .collect(Collectors.toList());
         }
         @Override
-    public String recommendAssignee(String issueTitle) {
-        IssueEntity currentIssue = issueRepository.findByTitle(issueTitle);
+    public String recommendAssignee(String issueTitle,String projectNm) {
+        ProjectEntity projectEntity = projectRepository.findByProjectNm(projectNm);
+        if(projectEntity == null)
+        {
+            return "Project not found";
+        }
+        IssueEntity currentIssue = issueRepository.findByProjectIdAndTitle(projectEntity,issueTitle);
         if (currentIssue == null) {
             return "Issue not found";
         }
@@ -247,7 +250,7 @@ public class IssueServiceImpl implements IssueService {
                 double similarity = 0.0;
                 System.out.println("oh my god!");
                 try {
-                    similarity = PythonScriptExecutor.calculateSimilarity(issueDescription, issue.getDescription());
+                    similarity = pythonScriptExecutor.calculateSimilarity(issueDescription, issue.getDescription());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -267,5 +270,12 @@ public class IssueServiceImpl implements IssueService {
             return bestAssignee.map(Map.Entry::getKey).orElse("No suitable assignee found");
     }
 
+    public List<IssueVo> getIssuesByProjectName(String projectNm) {
+        List<IssueEntity> issueEntities = issueRepository.findByProjectId_ProjectNm(projectNm);
+
+        return issueEntities.stream()
+                .map(this::convertToVo)
+                .collect(Collectors.toList());
+    }
 
 }
