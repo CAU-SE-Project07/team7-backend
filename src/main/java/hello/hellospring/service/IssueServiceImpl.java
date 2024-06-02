@@ -57,7 +57,7 @@ public class IssueServiceImpl implements IssueService {
                 issueVo.setPriority("MAJOR");
             }
             /** 등록하려는 프로젝트 조회 */
-            ProjectEntity projectEntity = projectRepository.findByProjectNm(issueVo.getProjectNm());
+            ProjectEntity projectEntity = projectRepository.findByProjectId(1);
             if (projectEntity == null) {
                 return new ResponseVo<IssueVo>(99, "FAILED, Project not found. [InsertIssue]");
             }
@@ -70,7 +70,7 @@ public class IssueServiceImpl implements IssueService {
                     .issueId(issueId)
                     .title(issueVo.getTitle())
                     .description(issueVo.getDescription())
-                    .reporter(memberEntity.getUserNm())//새로 만든 사람이 무조건 reporter
+                    .reporter(memberEntity.getUserId())//새로 만든 사람이 무조건 reporter
                     .date(issueVo.getDate())
                     .fixer(null)
                     .assignee(null)
@@ -100,10 +100,10 @@ public class IssueServiceImpl implements IssueService {
             {
                 return new ResponseVo<IssueVo>(99, "FAILED, Issue not found. [UpdateIssue]");
             }
-            if(!issueVo.getProjectNm().equals(origEntity.getProjectId().getProjectNm()))
-            {
-                return new ResponseVo<IssueVo>(99, "FAILED, Issue not found in that project. [UpdateIssue]");
-            }
+//            if(!issueVo.getProjectNm().equals(origEntity.getProjectId().getProjectNm()))
+//            {
+//                return new ResponseVo<IssueVo>(99, "FAILED, Issue not found in that project. [UpdateIssue]");
+//            }
             /**
              * 이슈에 대해 dev1을 담당자(assignee)로 지정하며,
              * 코멘트에 적절한 메시지를 추가함.
@@ -270,8 +270,8 @@ public class IssueServiceImpl implements IssueService {
             return bestAssignee.map(Map.Entry::getKey).orElse("No suitable assignee found");
     }
 
-    public List<IssueVo> getIssuesByProjectName(String projectNm) {
-        List<IssueEntity> issueEntities = issueRepository.findByProjectId_ProjectNm(projectNm);
+    public List<IssueVo> getIssuesByProjectName() {
+        List<IssueEntity> issueEntities = issueRepository.findAll();
 
         return issueEntities.stream()
                 .map(this::convertToVo)

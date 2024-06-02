@@ -64,9 +64,9 @@ public class IssueController {
         return issueService.recommendAssignee(issueTitle,projectNm);
     }
     /**해당 프로젝트에*/
-    @GetMapping("/project/name/{projectNm}")
-    public List<IssueVo> getIssuesByProjectName(@PathVariable String projectNm) {
-        return issueService.getIssuesByProjectName(projectNm);
+    @GetMapping("/allIssues")
+    public List<IssueVo> getIssuesByProjectName() {
+        return issueService.getIssuesByProjectName();
     }
 
     /**

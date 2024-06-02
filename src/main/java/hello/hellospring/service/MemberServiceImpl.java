@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
                 memberId = count + 1;
             }
             /** 등록하려는 프로젝트 엔티티 조회 - Where : projectNm */
-            ProjectEntity projectEntity = projectRepository.findByProjectNm(memberVo.getProjectNm());
+            ProjectEntity projectEntity = projectRepository.findByProjectId(1);
             /** 사용자 엔티티 추가 */
             MemberEntity memberEntity = MemberEntity.builder()
                     .memberId(memberId)
@@ -81,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
             /** 변경하려는 사용자 아이디를 가져와 데이터 조회 */
             MemberEntity memberEntity = memberRepository.findByUserId(memberVo.getUserId());
             if(memberEntity == null) {return new ResponseVo(99,"NOT FOUND MEMBER[update Member]");}
-            ProjectEntity projectEntity = projectRepository.findByProjectNm(memberVo.getProjectNm());
+            ProjectEntity projectEntity = projectRepository.findByProjectId(1);
             /** 멤버에 해당하는 */
             MemberEntity updateMemberEntity = MemberEntity.builder()
                     .memberId(memberEntity.getMemberId())
@@ -132,7 +132,6 @@ public class MemberServiceImpl implements MemberService {
             return new ResponseVo<MemberVo>(99,"FAILED TO FIND USER",null);
         }
         MemberVo vo = MemberVo.builder().
-                memberId(member.getMemberId()).
                 userId(member.getUserId()).
                 userNm(member.getUserNm()).
                 userPwd(member.getUserPwd()).
@@ -140,7 +139,7 @@ public class MemberServiceImpl implements MemberService {
                 userRoles(member.getUserRoles()).
                 nickNm(member.getNickNm()).
                 email(member.getEmail()).
-                projectNm(member.getProjectId().getProjectNm()).build();
+                build();
         List<MemberVo> vos=new ArrayList<MemberVo>();
         vos.add(vo);
         return new ResponseVo<MemberVo>(200,"SUCCESS",vos);
@@ -160,18 +159,19 @@ public class MemberServiceImpl implements MemberService {
                  /** 외래키 > ProjectNm을 받기 위한 작업 => ProjectEntity로 되어 있기 때문 */
                  ProjectEntity projectEntity = memberEntity.getProjectId();
                  /** 프로젝트 아이디로 프로젝트 조회 => 프로젝트 아이디 가져오기 */
-                 Optional<ProjectEntity> getProjectEntity = projectRepository.findById(projectEntity.getProjectId());
-                 ProjectEntity pEntity = getProjectEntity.get();
+                 ProjectEntity getProjectEntity = projectRepository.findByProjectId(projectEntity.getProjectId());
+                 if(getProjectEntity == null) {
+                     return new ResponseVo(99,"FAILED TO FIND PROJECT");
+                 }
+
+
                  MemberVo memberVo = MemberVo.builder()
-                         .memberId(memberEntity.getMemberId())
                          .userId(memberEntity.getUserId())
                          .userNm(memberEntity.getUserNm())
                          .userPwd(memberEntity.getUserPwd())
                          .userChkPwd(memberEntity.getUserChkPwd())
                          .userRoles(memberEntity.getUserRoles())
                          .nickNm(memberEntity.getNickNm())
-                         .email(memberEntity.getEmail())
-                         .projectNm(pEntity.getProjectNm())
                          .build();
                  finalList.add(memberVo);
              }

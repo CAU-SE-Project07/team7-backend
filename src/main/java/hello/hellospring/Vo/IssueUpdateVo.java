@@ -12,5 +12,4 @@ public class IssueUpdateVo {
     private String assignee;
     private String priority;
     private String state;
-    private String projectNm; // 프로젝트명(고유값)
 }

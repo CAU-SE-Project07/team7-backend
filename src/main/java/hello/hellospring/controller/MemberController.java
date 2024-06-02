@@ -48,7 +48,7 @@ public class MemberController {
     /**
      * 다중 사용자 삭제
      * */
-    @PostMapping("/deleteUsers")
+    @DeleteMapping("/deleteUsers")
     public ResponseVo deleteUsers(@RequestBody List<MemberVo> memberVoList) {
         return memberService.deleteUsers(memberVoList);
     }
