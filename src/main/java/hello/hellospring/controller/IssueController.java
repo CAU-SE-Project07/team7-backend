@@ -91,5 +91,10 @@ public class IssueController {
     public ResponseVo<IssueVo> getIssuesByIssueTitle(@PathVariable String issueTitle) {
         return issueService.getIssueByTitle(issueTitle);
     }
+
+    @GetMapping("/issuesByStates")
+    public List<IssueVo> getIssuesByStates(@RequestParam List<String> states) {
+        return issueService.getIssuesByStates(states);
+    }
 }
 

@@ -291,4 +291,12 @@ public class IssueServiceImpl implements IssueService {
         return new ResponseVo<>(200, "SUCCESS", resultList);
     }
 
+    public List<IssueVo> getIssuesByStates(List<String> states) {
+        List<IssueEntity> issueEntities = issueRepository.findByStateIn(states);
+
+        return issueEntities.stream()
+                .map(this::convertToVo)
+                .collect(Collectors.toList());
+    }
+
 }

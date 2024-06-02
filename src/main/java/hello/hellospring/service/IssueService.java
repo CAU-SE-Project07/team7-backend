@@ -21,6 +21,7 @@ public interface IssueService {
     public List<IssueVo> getIssuesByProjectName();
     public List<IssueVo> getIssuesByReporter(String testerNm);
     public ResponseVo<IssueVo> getIssueByTitle(String title);
+    public List<IssueVo> getIssuesByStates(List<String> states);
     //get by title
 }
 
