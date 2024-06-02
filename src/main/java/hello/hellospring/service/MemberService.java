@@ -7,4 +7,5 @@ public interface MemberService {
     ResponseVo insertMember(MemberVo memberVo);
     ResponseVo updateMember(MemberVo memberVo);
     ResponseVo login(MemberVo memberVo);
+    ResponseVo<MemberVo> selectAllUsers();
 }

@@ -2,13 +2,9 @@ package hello.hellospring.controller;
 
 import hello.hellospring.Vo.MemberVo;
 import hello.hellospring.Vo.ResponseVo;
-import hello.hellospring.service.IssueService;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/member")
@@ -35,6 +31,14 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseVo login(@RequestBody MemberVo memberVo) {
         return memberService.login(memberVo);
+    }
+
+    /**
+     * 모든 사용자 조회
+     * */
+    @GetMapping("/allUsers")
+    public ResponseVo<MemberVo> selectAllUsers() {
+        return memberService.selectAllUsers();
     }
 
 }

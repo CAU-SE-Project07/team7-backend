@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -118,5 +121,40 @@ public class MemberServiceImpl implements MemberService {
             return new ResponseVo(99,"FAIL");
         }
 
+    }
+
+    /**
+     * 모든 사용자 조회
+     * */
+    @Override
+    public ResponseVo<MemberVo> selectAllUsers() {
+         try {
+             /** DB에 저장된 모든 사용자 조회 */
+             List<MemberEntity> memberList = memberRepository.findAll();
+             /** 최종 반환할 사용자 리스트 > Entity => VO 객체로 변환 */
+             List<MemberVo> finalList = new ArrayList<>();
+             for(MemberEntity memberEntity: memberList) {
+                 /** 외래키 > ProjectNm을 받기 위한 작업 => ProjectEntity로 되어 있기 때문 */
+                 ProjectEntity projectEntity = memberEntity.getProjectId();
+                 /** 프로젝트 아이디로 프로젝트 조회 => 프로젝트 아이디 가져오기 */
+                 Optional<ProjectEntity> getProjectEntity = projectRepository.findById(projectEntity.getProjectId());
+                 ProjectEntity pEntity = getProjectEntity.get();
+                 MemberVo memberVo = MemberVo.builder()
+                         .memberId(memberEntity.getMemberId())
+                         .userId(memberEntity.getUserId())
+                         .userNm(memberEntity.getUserNm())
+                         .userPwd(memberEntity.getUserPwd())
+                         .userChkPwd(memberEntity.getUserChkPwd())
+                         .userRoles(memberEntity.getUserRoles())
+                         .nickNm(memberEntity.getNickNm())
+                         .email(memberEntity.getEmail())
+                         .projectNm(pEntity.getProjectNm())
+                         .build();
+                 finalList.add(memberVo);
+             }
+             return new ResponseVo<>(200,"SUCCESS", finalList);
+         } catch (Exception e) {
+             return new ResponseVo<>(99,"FAIL");
+         }
     }
 }
