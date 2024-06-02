@@ -13,6 +13,7 @@ import java.util.List;
 @ToString(exclude = "projectId")
 public class MemberEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int memberId;
     @Column
     private String userId; // 아이디

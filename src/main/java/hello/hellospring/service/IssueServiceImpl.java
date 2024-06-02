@@ -47,11 +47,6 @@ public class IssueServiceImpl implements IssueService {
                 return new ResponseVo<IssueVo>(11, "Title is duplicated.");
             }
             /** 이슈 기본키 : issueId => 고유값 처리 */
-            int issueId = 1;
-            int count = issueRepository.findAll().size();
-            if (count > 0) {
-                issueId = count + 1;
-            }
             /** 우선순위 처리 */
             if (issueVo.getPriority() == null || issueVo.getPriority().equals("")) {
                 issueVo.setPriority("MAJOR");
@@ -67,7 +62,6 @@ public class IssueServiceImpl implements IssueService {
                 return new ResponseVo<IssueVo>(99, "FAILED, Member not found. [InsertIssue]");
             }
             IssueEntity issueEntity = IssueEntity.builder()
-                    .issueId(issueId)
                     .title(issueVo.getTitle())
                     .description(issueVo.getDescription())
                     .reporter(memberEntity.getUserId())//새로 만든 사람이 무조건 reporter

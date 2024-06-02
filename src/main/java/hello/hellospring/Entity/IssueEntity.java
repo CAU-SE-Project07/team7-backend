@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class IssueEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int issueId;
     @Column
     private String title;

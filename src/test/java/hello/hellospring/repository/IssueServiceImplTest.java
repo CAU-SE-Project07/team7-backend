@@ -149,8 +149,8 @@ public class IssueServiceImplTest {
                 description(l_des).
                 date(l_date).
                 priority(l_pri).
-                userId(tester1.getUserId()).
-                projectNm(project1.getProjectNm()).build();
+                userId(tester1.getUserId())
+                .build();
 
         assertThat(issueService.insertIssue(issueCreateVo).getMsg()).isEqualTo("SUCCESS");
 
@@ -183,7 +183,7 @@ public class IssueServiceImplTest {
                date(l_date).
                priority(l_pri).
                userId(tester1.getUserId()).
-               projectNm(project1.getProjectNm()).build();
+               build();
        issueService.insertIssue(issueCreateVo);
 
        IssueUpdateVo issueUpdateVo = IssueUpdateVo.builder().
@@ -193,7 +193,7 @@ public class IssueServiceImplTest {
                assignee(developer1.getUserNm()).
                priority("").
                state("").
-               projectNm(project1.getProjectNm()).build();
+               build();
 
        assertThat(issueService.updateIssue(issueUpdateVo).getMsg()).isEqualTo("SUCCESS");
        IssueEntity updatedIssue = issueRepository.findByTitle(l_title);
@@ -228,7 +228,6 @@ public class IssueServiceImplTest {
                 .assignee(originalAssignee)
                 .priority(originalPriority)
                 .state(originalState)
-                .projectNm(project1.getProjectNm())
                 .build();
 
         assertThat(issueService.updateIssue(updateVo).getMsg()).isEqualTo("SUCCESS");
@@ -261,7 +260,6 @@ public class IssueServiceImplTest {
                 .assignee(originalAssignee)
                 .priority("MINOR")
                 .state(originalState)
-                .projectNm(project1.getProjectNm())
                 .build();
 
         assertThat(issueService.updateIssue(updateVo).getMsg()).isEqualTo("SUCCESS");
@@ -287,7 +285,6 @@ public class IssueServiceImplTest {
                 .assignee("")
                 .priority("MINOR")
                 .state("FIXED")
-                .projectNm(project1.getProjectNm())
                 .build();
         assertThat(issueService.updateIssue(updateVo).getMsg()).isEqualTo("SUCCESS");
         IssueEntity updatedIssue = issueRepository.findByTitle(issue2.getTitle());

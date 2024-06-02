@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class CommentEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentId; // 아이디
     @Column
     private String content; // 댓글 내용

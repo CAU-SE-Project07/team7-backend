@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.3702a74e.css",
-    "main.js": "/static/js/main.a5da5cc6.js",
+    "main.js": "/static/js/main.cbefffbb.js",
     "static/media/Pretendard-Regular.ttf": "/static/media/Pretendard-Regular.fbe5b096111efa3e3bc2.ttf",
     "static/media/logo.png": "/static/media/logo.d517df5df4463bb13fe3.png",
     "index.html": "/index.html",
     "main.3702a74e.css.map": "/static/css/main.3702a74e.css.map",
-    "main.a5da5cc6.js.map": "/static/js/main.a5da5cc6.js.map"
+    "main.cbefffbb.js.map": "/static/js/main.cbefffbb.js.map"
   },
   "entrypoints": [
     "static/css/main.3702a74e.css",
-    "static/js/main.a5da5cc6.js"
+    "static/js/main.cbefffbb.js"
   ]
 }

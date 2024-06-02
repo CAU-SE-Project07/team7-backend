@@ -42,11 +42,6 @@ public class CommetServiceImpl implements CommentService {
                 return null;
             }
             /** 코멘트 기본키 : commentId => 고유값 처리 */
-            int commentId = 1;
-            int count = commentRepository.findAll().size();
-            if(count > 0) {
-                commentId = count + 1;
-            }
             /** 코멘트를 등록하려는 프로젝트 엔티티 조회 */
             ProjectEntity projectEntity = projectRepository.findByProjectNm(commentVo.getProjectNm());
             if(projectEntity==null)
@@ -67,7 +62,6 @@ public class CommetServiceImpl implements CommentService {
             }
             /** 코멘트 데이터 insert */
             CommentEntity commentEntity = CommentEntity.builder()
-                    .commentId(commentId)
                     .content(commentVo.getContent())
                     .date(commentVo.getDate())
                     .projectId(projectEntity)

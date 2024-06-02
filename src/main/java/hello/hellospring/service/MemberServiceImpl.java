@@ -49,16 +49,10 @@ public class MemberServiceImpl implements MemberService {
                 return new ResponseVo(11,"ID is duplicated.");
             }
             /** 사용자 기본키 : memberId => 고유값 처리 */
-            int memberId = 1;
-            int count = memberRepository.findAll().size();
-            if(count > 0) {
-                memberId = count + 1;
-            }
             /** 등록하려는 프로젝트 엔티티 조회 - Where : projectNm */
             ProjectEntity projectEntity = projectRepository.findByProjectId(1);
             /** 사용자 엔티티 추가 */
             MemberEntity memberEntity = MemberEntity.builder()
-                    .memberId(memberId)
                     .userId(memberVo.getUserId())
                     .userNm(memberVo.getUserNm())
                     .userPwd(memberVo.getUserPwd())
@@ -172,6 +166,7 @@ public class MemberServiceImpl implements MemberService {
                          .userChkPwd(memberEntity.getUserChkPwd())
                          .userRoles(memberEntity.getUserRoles())
                          .nickNm(memberEntity.getNickNm())
+                         .email(memberEntity.getEmail())
                          .build();
                  finalList.add(memberVo);
              }
