@@ -2,8 +2,10 @@ package hello.hellospring.controller;
 
 import hello.hellospring.Vo.MemberVo;
 import hello.hellospring.Vo.ResponseVo;
+import hello.hellospring.service.IssueService;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class MemberController {
         return memberService.insertMember(memberVo);
     }
 
-    @PostMapping("/updateMember")
+    @PutMapping("/updateMember")
     public ResponseVo updateMember(@RequestBody MemberVo memberVo) {
         return memberService.updateMember(memberVo);
     }
@@ -49,6 +51,11 @@ public class MemberController {
     @PostMapping("/deleteUsers")
     public ResponseVo deleteUsers(@RequestBody List<MemberVo> memberVoList) {
         return memberService.deleteUsers(memberVoList);
+    }
+
+    @GetMapping("/memberInfo/{userId}")
+    public ResponseVo<MemberVo> getMemberInfo(@PathVariable String userId) {
+        return memberService.findBymemberId(userId);
     }
 
 }

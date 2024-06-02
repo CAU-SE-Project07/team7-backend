@@ -23,16 +23,16 @@ public class ProjectServiceImpl implements ProjectService{
                 return null;
             }
             /** 프로젝트명 중복 체크 */
-            ProjectEntity isExsitedProjectEntity = projectRepository.findByProjectNm(projectVo.getProjectNm());
-            if(isExsitedProjectEntity != null) {
-                return new ResponseVo(11,"Project Name is duplicated.");
-            }
+//            ProjectEntity isExsitedProjectEntity = projectRepository.findByProjectNm(projectVo.getProjectNm());
+//            if(isExsitedProjectEntity != null) {
+//                return new ResponseVo(11,"Project Name is duplicated.");
+//            }
             /** 프로젝트 기본키 : projectId => 고유값 처리 */
             int projectId = 1;
-            int count = projectRepository.findAll().size();
-            if(count > 0) {
-                projectId = count + 1;
-            }
+//            int count = projectRepository.findAll().size();
+//            if(count > 0) {
+//                projectId = count + 1;
+//            }
             ProjectEntity projectEntity = ProjectEntity.builder()
                     .projectId(projectId)
                     .projectNm(projectVo.getProjectNm())
@@ -41,6 +41,23 @@ public class ProjectServiceImpl implements ProjectService{
             projectRepository.save(projectEntity);
             return new ResponseVo(200,"SUCCESS");
         } catch (Exception e) {
+            return new ResponseVo(99,"FAIL");
+        }
+    }
+    @Override
+    public ResponseVo updateProject(ProjectVo projectVo)
+    {
+        try {
+            int projectId = 1;
+            ProjectEntity projectEntity = projectRepository.findByProjectId(projectId);
+            ProjectEntity updatedProject = ProjectEntity.builder()
+                    .projectId(projectId)
+                    .projectNm(projectVo.getProjectNm())
+                    .projectDesc(projectVo.getProjectDesc())
+                    .build();
+            projectRepository.save(updatedProject);
+            return new ResponseVo(200, "SUCCESS");
+        }catch (Exception e) {
             return new ResponseVo(99,"FAIL");
         }
     }
