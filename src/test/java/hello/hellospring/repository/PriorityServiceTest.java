@@ -1,9 +1,9 @@
-package hello.hellospring.service;
+package hello.hellospring.repository;
 
 import hello.hellospring.Entity.PriorityEntity;
 import hello.hellospring.Vo.PriorityVo;
 import hello.hellospring.Vo.ResponseVo;
-import hello.hellospring.repository.PriorityRepository;
+import hello.hellospring.service.PriorityServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

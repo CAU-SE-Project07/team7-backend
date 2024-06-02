@@ -1,9 +1,9 @@
-package hello.hellospring.service;
+package hello.hellospring.repository;
 
 import hello.hellospring.Entity.ProjectEntity;
 import hello.hellospring.Vo.ProjectVo;
 import hello.hellospring.Vo.ResponseVo;
-import hello.hellospring.repository.ProjectRepository;
+import hello.hellospring.service.ProjectServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
