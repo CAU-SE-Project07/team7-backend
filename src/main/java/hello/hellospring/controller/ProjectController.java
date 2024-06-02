@@ -26,5 +26,4 @@ public class ProjectController {
     public ResponseVo updateProject(@RequestBody ProjectVo projectVo) {
         return projectService.updateProject(projectVo);
     }
-
 }
