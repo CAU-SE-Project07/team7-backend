@@ -277,5 +277,24 @@ public class IssueServiceImpl implements IssueService {
                 .map(this::convertToVo)
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<IssueVo> getIssuesByReporter(String testerNm) {
+        List<IssueEntity> issueEntities = issueRepository.findByReporter(testerNm);
+
+        return issueEntities.stream()
+                .map(this::convertToVo)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public ResponseVo<IssueVo> getIssueByTitle(String title)
+    {
+        IssueEntity issueEntity = issueRepository.findByTitle(title);
+
+        List<IssueVo> resultList = new ArrayList<>();
+        IssueVo issueVo1 = convertToVo(issueEntity);
+        resultList.add(issueVo1);
+
+        return new ResponseVo<>(200, "SUCCESS", resultList);
+    }
 
 }

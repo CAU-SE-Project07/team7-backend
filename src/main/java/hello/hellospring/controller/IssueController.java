@@ -69,5 +69,20 @@ public class IssueController {
         return issueService.getIssuesByProjectName(projectNm);
     }
 
+    /**
+     * reporter기반 다긁어오기
+     * */
+    @GetMapping("/reporterName/{reporterName}")
+    public List<IssueVo> getIssuesByReporterName(@PathVariable String reporterName) {
+        return issueService.getIssuesByReporter(reporterName);
+    }
+
+    /**
+     * title기반 긁어오기
+     */
+    @GetMapping("/issueTitle/{issueTitle}")
+    public ResponseVo<IssueVo> getIssuesByIssueTitle(@PathVariable String issueTitle) {
+        return issueService.getIssueByTitle(issueTitle);
+    }
 }
 
