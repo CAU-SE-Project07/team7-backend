@@ -5,10 +5,7 @@ import hello.hellospring.Vo.ResponseVo;
 import hello.hellospring.service.IssueService;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/member")
@@ -24,7 +21,7 @@ public class MemberController {
         return memberService.insertMember(memberVo);
     }
 
-    @PostMapping("/updateMember")
+    @PutMapping("/updateMember")
     public ResponseVo updateMember(@RequestBody MemberVo memberVo) {
         return memberService.updateMember(memberVo);
     }
@@ -35,6 +32,11 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseVo login(@RequestBody MemberVo memberVo) {
         return memberService.login(memberVo);
+    }
+
+    @GetMapping("/memberInfo/{userId}")
+    public ResponseVo<MemberVo> getMemberInfo(@PathVariable String userId) {
+        return memberService.findBymemberId(userId);
     }
 
 }

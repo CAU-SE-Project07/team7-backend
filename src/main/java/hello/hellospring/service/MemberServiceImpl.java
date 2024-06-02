@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -119,5 +121,26 @@ public class MemberServiceImpl implements MemberService {
             return new ResponseVo(99,"FAIL");
         }
 
+    }
+    @Override
+    public ResponseVo<MemberVo> findBymemberId(String memberId)
+    {
+        MemberEntity member = memberRepository.findByUserId(memberId);
+        if(member == null) {
+            return new ResponseVo<MemberVo>(99,"FAILED TO FIND USER",null);
+        }
+        MemberVo vo = MemberVo.builder().
+                memberId(member.getMemberId()).
+                userId(member.getUserId()).
+                userNm(member.getUserNm()).
+                userPwd(member.getUserPwd()).
+                userChkPwd(member.getUserChkPwd()).
+                userRoles(member.getUserRoles()).
+                nickNm(member.getNickNm()).
+                email(member.getEmail()).
+                projectNm(member.getProjectId().getProjectNm()).build();
+        List<MemberVo> vos=new ArrayList<MemberVo>();
+        vos.add(vo);
+        return new ResponseVo<MemberVo>(200,"SUCCESS",vos);
     }
 }
