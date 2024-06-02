@@ -31,9 +31,9 @@ public class MemberEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projectId")
     private ProjectEntity projectId;
-    @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "memberId")
     private List<IssueEntity> issueEntities ;
-    @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "memberId")
     private List<CommentEntity> commentEntities ;
 
     public MemberEntity() {};

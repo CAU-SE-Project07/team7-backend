@@ -6,6 +6,8 @@ import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/member")
 public class MemberController {
@@ -39,6 +41,14 @@ public class MemberController {
     @GetMapping("/allUsers")
     public ResponseVo<MemberVo> selectAllUsers() {
         return memberService.selectAllUsers();
+    }
+
+    /**
+     * 다중 사용자 삭제
+     * */
+    @PostMapping("/deleteUsers")
+    public ResponseVo deleteUsers(@RequestBody List<MemberVo> memberVoList) {
+        return memberService.deleteUsers(memberVoList);
     }
 
 }

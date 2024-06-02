@@ -1,5 +1,6 @@
 package hello.hellospring.service;
 
+import hello.hellospring.Entity.IssueEntity;
 import hello.hellospring.Entity.MemberEntity;
 import hello.hellospring.Entity.ProjectEntity;
 import hello.hellospring.Vo.MemberVo;
@@ -158,4 +159,36 @@ public class MemberServiceImpl implements MemberService {
              return new ResponseVo<>(99,"FAIL");
          }
     }
+
+    @Override
+    public ResponseVo deleteUsers(List<MemberVo> memberVoList) {
+        if(ObjectUtils.isEmpty(memberVoList)) {
+            return null;
+        }
+        try {
+            /** 파라미터 존재 여부 판단 */
+            if(memberVoList.size() > 0) {
+                for(MemberVo memberVo: memberVoList) {
+                    /** 사용자 아이디(고유함)로 엔티티 찾아오기 */
+                    MemberEntity findMember = memberRepository.findByUserId(memberVo.getUserId());
+                    if(ObjectUtils.isEmpty(findMember)) {
+                        return new ResponseVo(11,"사용자가 존재하지 않습니다.");
+                    }
+                    if(findMember.getIssueEntities().size() > 0) {
+                        /** 사용자만 삭제할 것 => 자식인 issue와의 부모 관계 끊어주기 */
+                        for(IssueEntity issueEntity: findMember.getIssueEntities()) {
+                            issueEntity.setMemberId(null);
+                        }
+                    }
+                    memberRepository.delete(findMember);
+                }
+                return new ResponseVo(200,"SUCCESS");
+            } else {
+                return new ResponseVo(12,"삭제하려는 사용자가 없습니다.");
+            }
+        } catch (Exception e) {
+            return new ResponseVo(99,"FAIL");
+        }
+    }
+
 }
