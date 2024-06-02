@@ -22,4 +22,6 @@ public interface IssueRepository extends JpaRepository<IssueEntity, Integer> {
     List<IssueEntity> findIssuesByAssignee(@Param("assignee") String assignee);
     List<IssueEntity> findByProjectId_ProjectNm(String projectNm);
     IssueEntity findByProjectIdAndTitle(ProjectEntity projectId, String title);
+    @Query("SELECT i FROM ISSUE i WHERE i.reporter = :reporter")
+    List<IssueEntity> findByReporter(@Param("reporter") String reporter);
 }

@@ -113,6 +113,7 @@ public class MemberServiceImpl implements MemberService {
             if(!memberEntity.getUserId().equals(memberVo.getUserId()) || !memberEntity.getUserPwd().equals(memberVo.getUserPwd())) {
                 return new ResponseVo(12,"아이디 및 비밀번호가 틀렸습니다.");
             }
+            if(memberEntity.getUserRoles().equals("ADMIN")&&memberEntity.getUserPwd().equals("ADMIN"));
             return new ResponseVo(200,"SUCCESS");
         } catch (Exception e) {
             return new ResponseVo(99,"FAIL");
