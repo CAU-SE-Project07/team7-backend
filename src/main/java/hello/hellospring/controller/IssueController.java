@@ -6,6 +6,8 @@ import hello.hellospring.Enum.Priority;
 import hello.hellospring.Enum.State;
 import hello.hellospring.Vo.*;
 import hello.hellospring.service.IssueService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ public class IssueController {
     public IssueController(IssueService issueService) {
         this.issueService = issueService;
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(IssueController.class);
 
     /**
      * 이슈 추가 - Test 권한자
@@ -66,7 +70,10 @@ public class IssueController {
     /**해당 프로젝트에*/
     @GetMapping("/allIssues")
     public List<IssueVo> getIssuesByProjectName() {
-        return issueService.getIssuesByProjectName();
+        logger.info("Received request to get all issues");
+        List<IssueVo> issues = issueService.getIssuesByProjectName();
+        logger.info("Returning {} issues", issues.size());
+        return issues;
     }
 
     /**

@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*") // 허용할 도메인
-                .allowedMethods("GET", "POST", "PUT", "DELETE") // 허용할 HTTP 메소드
+                .allowedMethods("GET", "POST", "PUT", "DELETE","OPTIONS") // 허용할 HTTP 메소드
                 .allowedHeaders("*") // 허용할 헤더
                 .allowCredentials(false); // 자격 증명 허용 여부
     }
