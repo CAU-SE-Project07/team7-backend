@@ -89,12 +89,23 @@
 # 1. 어드민이 생성해둔 아이디로 로그인 합니다.
 <img width="519" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/75228dbf-917b-436c-8468-e716b2092cc0">
 <img width="561" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/ffbc4cb7-2940-4397-9c7a-73be77c8a73c">
+
+
 # 2. 메인 화면에서 모든 이슈를 브라우징 합니다.
 <img width="561" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/830cf89b-6afb-4ff3-8622-24ea571b7273">
+
+
+
 # 3. My issue 탭에서 나에게 할당된 이슈를 브라우징 합니다.
 <img width="561" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/e3d904da-2192-4242-b057-74cc7cb5a6f0">
+
+
+
 # 4. 이슈를 자세히 확인하고 수정합니다.
 <img width="637" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/2697bf41-08d6-43df-9ed7-68afc96c2ff8">
+
+
+
 # 5. 이슈를 등록합니다.
 <img width="633" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/df4be6f6-05f4-423c-b079-efd99930ab69">
 
