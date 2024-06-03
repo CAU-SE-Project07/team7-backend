@@ -100,9 +100,6 @@ public class IssueServiceImplTest {
         memberEntities.add(tester1);
         memberEntities.add(tester2);
         project1.setMemberEntities(memberEntities);
-//        entityManager.persist(project1);
-//        entityManager.persist(tester1);
-//        entityManager.persist(tester2);
         projectRepository.save(project1);
         memberRepository.save(tester1);
         memberRepository.save(tester2);

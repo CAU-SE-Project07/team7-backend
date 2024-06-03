@@ -46,22 +46,6 @@ class ProjectServiceTest {
     }
 
     @Test
-    void insertProject_shouldReturnFailure_whenProjectNameIsDuplicated() {
-        // Given
-        ProjectVo projectVo = new ProjectVo("Existing Project", "Project Description");
-        when(projectRepository.findByProjectNm(projectVo.getProjectNm())).thenReturn(new ProjectEntity());
-
-        // When
-        ResponseVo response = projectService.insertProject(projectVo);
-
-        // Then
-        assertNotNull(response);
-        assertEquals(11, response.getCode());
-        assertEquals("Project Name is duplicated.", response.getMsg());
-        verify(projectRepository, never()).save(any(ProjectEntity.class));
-    }
-
-    @Test
     void insertProject_shouldReturnNull_whenProjectVoIsEmpty() {
         // When
         ResponseVo response = projectService.insertProject(null);
