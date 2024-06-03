@@ -18,7 +18,7 @@ public interface IssueService {
 
     public List<IssueVo> getIssuesByAssignee(String assignee);
     public String recommendAssignee(String issueId,String ProjectNm);
-    public List<IssueVo> getIssuesByProjectName();
+    public List<IssueVo> getAllIssues();
     public List<IssueVo> getIssuesByReporter(String testerNm);
     public ResponseVo<IssueVo> getIssueByTitle(String title);
     public List<IssueVo> getIssuesByStates(List<String> states);

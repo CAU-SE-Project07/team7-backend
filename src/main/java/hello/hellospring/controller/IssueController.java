@@ -71,7 +71,7 @@ public class IssueController {
     @GetMapping("/allIssues")
     public List<IssueVo> getIssuesByProjectName() {
         logger.info("Received request to get all issues");
-        List<IssueVo> issues = issueService.getIssuesByProjectName();
+        List<IssueVo> issues = issueService.getAllIssues();
         logger.info("Returning {} issues", issues.size());
         return issues;
     }

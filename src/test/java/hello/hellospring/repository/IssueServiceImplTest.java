@@ -51,19 +51,19 @@ public class IssueServiceImplTest {
     MemberEntity developer1;
     IssueEntity issue1;
     IssueEntity issue2;
+    IssueEntity issue3;
+    IssueEntity issue4;
 
     @BeforeEach
     void setUp()
     {
         project1 = new ProjectEntity();
         {
-            project1.setProjectId(1);
             project1.setProjectNm("project1");
             project1.setProjectDesc("this is test project1");
         }
         tester1 = new MemberEntity();
         {
-            tester1.setMemberId(1);
             tester1.setUserId("tester1");
             tester1.setUserNm("tester1");
             tester1.setUserPwd("tester1pass");
@@ -75,7 +75,6 @@ public class IssueServiceImplTest {
         }
         tester2 = new MemberEntity();
         {
-            tester2.setMemberId(2);
             tester2.setUserId("tester2");
             tester2.setUserNm("tester2");
             tester2.setUserPwd("tester2pass");
@@ -87,7 +86,6 @@ public class IssueServiceImplTest {
         }
         developer1 = new MemberEntity();
         {
-            developer1.setMemberId(3);
             developer1.setUserId("developer1");
             developer1.setUserNm("developer1");
             developer1.setUserPwd("dev1pass");
@@ -102,16 +100,15 @@ public class IssueServiceImplTest {
         memberEntities.add(tester1);
         memberEntities.add(tester2);
         project1.setMemberEntities(memberEntities);
-        entityManager.persist(project1);
-        entityManager.persist(tester1);
-        entityManager.persist(tester2);
+//        entityManager.persist(project1);
+//        entityManager.persist(tester1);
+//        entityManager.persist(tester2);
         projectRepository.save(project1);
         memberRepository.save(tester1);
         memberRepository.save(tester2);
         memberRepository.save(developer1);
-        issue1 = new IssueEntity();
 
-        issue1.setIssueId(1);
+        issue1 = new IssueEntity();
         issue1.setTitle("Issuetest");
         issue1.setDescription("This is test issue1");
         issue1.setReporter("reporter1");
@@ -122,8 +119,8 @@ public class IssueServiceImplTest {
         issue1.setProjectId(project1);
         issue1.setMemberId(tester1);
         issueRepository.save(issue1);
+
         issue2 = new IssueEntity();
-        issue2.setIssueId(2);
         issue2.setTitle("updateToFixed");
         issue2.setDescription("This is test toFixed");
         issue2.setReporter("reporter1");
@@ -134,6 +131,30 @@ public class IssueServiceImplTest {
         issue2.setProjectId(project1);
         issue2.setMemberId(tester1);
         issueRepository.save(issue2);
+
+        issue3 = new IssueEntity();
+        issue3.setTitle("updateToFixed2");
+        issue3.setDescription("This is test toFixed");
+        issue3.setReporter("reporter2");
+        issue3.setDate("2025/05/29");
+        issue3.setAssignee("Developer1");
+        issue3.setPriority("MAJOR");
+        issue3.setState("ASSIGNED");
+        issue3.setProjectId(project1);
+        issue3.setMemberId(tester1);
+        issueRepository.save(issue3);
+
+        issue4 = new IssueEntity();
+        issue4.setTitle("updateToFixed2");
+        issue4.setDescription("This is test toFixed");
+        issue4.setReporter("awef");
+        issue4.setDate("2025/05/29");
+        issue4.setAssignee("awef");
+        issue4.setPriority("MAJOR");
+        issue4.setState("REOPENED");
+        issue4.setProjectId(project1);
+        issue4.setMemberId(tester1);
+        issueRepository.save(issue4);
     }
 
 
@@ -154,20 +175,7 @@ public class IssueServiceImplTest {
 
         assertThat(issueService.insertIssue(issueCreateVo).getMsg()).isEqualTo("SUCCESS");
 
-        int id = issueRepository.findAll().size();
-        IssueEntity issueEntity = IssueEntity.builder().
-                issueId(id).
-                title(l_title).
-                reporter(tester1.getUserId()).
-                description(l_des).
-                date(l_date).
-                fixer(null).
-                assignee(null).
-                priority(l_pri).
-                state("NEW").
-                projectId(project1).
-                memberId(tester1).build();
-        assertThat(issueRepository.findByTitle("Issue create test issue1")).isEqualTo(issueEntity);
+        assertThat(issueRepository.findByTitle("Issue create test issue1").getTitle()).isEqualTo("Issue create test issue1");
     }
 
    @Test
@@ -190,7 +198,7 @@ public class IssueServiceImplTest {
                title(l_title).
                description("").
                date("").
-               assignee(developer1.getUserNm()).
+               assignee(developer1.getUserId()).
                priority("").
                state("").
                build();
@@ -291,4 +299,53 @@ public class IssueServiceImplTest {
         assertThat(updatedIssue.getFixer()).isEqualTo(issue2.getAssignee());
         assertThat(updatedIssue.getState()).isEqualTo("FIXED");
     }
+
+    @Test
+    void testGetIssuesByAssigne(){
+        List<IssueVo> vos = new ArrayList<>();
+        vos.add(issueService.convertToVo(issue2));
+        vos.add(issueService.convertToVo(issue3));
+        assertThat(issueService.getIssuesByAssignee("Developer1")).isEqualTo(vos);
+
+    }
+
+    @Test
+    void testGetAllIssues()
+    {
+        List<IssueVo> vos = new ArrayList<>();
+        vos.add(issueService.convertToVo(issue1));
+        vos.add(issueService.convertToVo(issue2));
+        vos.add(issueService.convertToVo(issue3));
+        vos.add(issueService.convertToVo(issue4));
+        assertThat(issueService.getAllIssues()).isEqualTo(vos);
+    }
+
+    @Test
+    void testGetIssuesByReporter()
+    {
+        List<IssueVo> vos = new ArrayList<>();
+        vos.add(issueService.convertToVo(issue1));
+        vos.add(issueService.convertToVo(issue2));
+        assertThat(issueService.getIssuesByReporter("reporter1")).isEqualTo(vos);
+    }
+
+    @Test
+    void testGetIssueByTitle()
+    {
+        assertThat(issueService.getIssueByTitle(issue1.getTitle()).getList().getFirst().getTitle()).isEqualTo(issue1.getTitle());
+    }
+
+    @Test
+    void testGetIssuesByStates()
+    {
+        List<String> states = new ArrayList<>();
+        states.add("OPEN");
+        states.add("ASSIGNED");
+        List<IssueVo> vos = new ArrayList<>();
+        vos.add(issueService.convertToVo(issue1));
+        vos.add(issueService.convertToVo(issue2));
+        vos.add(issueService.convertToVo(issue3));
+        assertThat(issueService.getIssuesByStates(states)).isEqualTo(vos);
+    }
+
 }

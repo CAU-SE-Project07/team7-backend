@@ -52,7 +52,7 @@ public class IssueServiceImpl implements IssueService {
                 issueVo.setPriority("MAJOR");
             }
             /** 등록하려는 프로젝트 조회 */
-            ProjectEntity projectEntity = projectRepository.findByProjectId(1);
+            ProjectEntity projectEntity = projectRepository.findAll().getFirst();
             if (projectEntity == null) {
                 return new ResponseVo<IssueVo>(99, "FAILED, Project not found. [InsertIssue]");
             }
@@ -264,7 +264,7 @@ public class IssueServiceImpl implements IssueService {
             return bestAssignee.map(Map.Entry::getKey).orElse("No suitable assignee found");
     }
 
-    public List<IssueVo> getIssuesByProjectName() {
+    public List<IssueVo> getAllIssues() {
         List<IssueEntity> issueEntities = issueRepository.findAll();
 
         return issueEntities.stream()

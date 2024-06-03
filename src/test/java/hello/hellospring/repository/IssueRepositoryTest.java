@@ -38,6 +38,8 @@ public class IssueRepositoryTest {
     private IssueEntity issue3;
     private IssueEntity issue4;
     private IssueEntity issue5;
+    private IssueEntity issue6;
+    private IssueEntity issue7;
     ProjectEntity project1;
     MemberEntity tester1;
     MemberEntity tester2;
@@ -47,13 +49,11 @@ public class IssueRepositoryTest {
     {
         project1 = new ProjectEntity();
         {
-            project1.setProjectId(1);
             project1.setProjectNm("project1");
             project1.setProjectDesc("this is test project1");
         }
         tester1 = new MemberEntity();
         {
-            tester1.setMemberId(1);
             tester1.setUserId("tester1");
             tester1.setUserNm("tester1");
             tester1.setUserPwd("tester1pass");
@@ -65,7 +65,6 @@ public class IssueRepositoryTest {
         }
         tester2 = new MemberEntity();
         {
-            tester2.setMemberId(2);
             tester2.setUserId("tester2");
             tester2.setUserNm("tester2");
             tester2.setUserPwd("tester2pass");
@@ -77,7 +76,6 @@ public class IssueRepositoryTest {
         }
         issue1 = new IssueEntity();
         {
-            issue1.setIssueId(1);
             issue1.setTitle("Issue1");
             issue1.setDescription("This is test issue1");
             issue1.setReporter("");
@@ -89,7 +87,6 @@ public class IssueRepositoryTest {
         }
         issue2 = new IssueEntity();
         {
-            issue2.setIssueId(2);
             issue2.setTitle("Issue2");
             issue2.setDescription("This is test issue2");
             issue2.setReporter("");
@@ -101,7 +98,6 @@ public class IssueRepositoryTest {
         }
         issue3 = new IssueEntity();
         {
-            issue3.setIssueId(3);
             issue3.setTitle("Issue3");
             issue3.setDescription("This is test issue3");
             issue3.setReporter("");
@@ -113,7 +109,6 @@ public class IssueRepositoryTest {
         }
         issue4 = new IssueEntity();
         {
-            issue4.setIssueId(4);
             issue4.setTitle("Issue4");
             issue4.setDescription("This is test issue4");
             issue4.setReporter("");
@@ -126,7 +121,6 @@ public class IssueRepositoryTest {
         }
         issue5 = new IssueEntity();
         {
-            issue5.setIssueId(5);
             issue5.setTitle("Issue5");
             issue5.setDescription("This is test issue5");
             issue5.setReporter("");
@@ -136,6 +130,30 @@ public class IssueRepositoryTest {
             issue5.setPriority("MAJOR");
             issue5.setProjectId(project1);
             issue5.setMemberId(null);
+        }
+        issue6 = new IssueEntity();
+        {
+            issue6.setTitle("Issue6");
+            issue6.setDescription("This is test issue6");
+            issue6.setReporter("reporter1");
+            issue6.setAssignee("hojin1");
+            issue6.setDate("2025/05/29");
+            issue6.setState("RESOLVED");
+            issue6.setPriority("MAJOR");
+            issue6.setProjectId(project1);
+            issue6.setMemberId(null);
+        }
+        issue7 = new IssueEntity();
+        {
+            issue7.setTitle("Issue7");
+            issue7.setDescription("This is test issue6");
+            issue7.setReporter("reporter1");
+            issue7.setAssignee("hojin1");
+            issue7.setDate("2025/05/29");
+            issue7.setState("CLOSED");
+            issue7.setPriority("MAJOR");
+            issue7.setProjectId(project1);
+            issue7.setMemberId(null);
         }
         List<MemberEntity> memberEntities = new ArrayList<>();
         memberEntities.add(tester1);
@@ -152,6 +170,8 @@ public class IssueRepositoryTest {
         issueRepository.save(issue3);
         issueRepository.save(issue4);
         issueRepository.save(issue5);
+        issueRepository.save(issue6);
+        issueRepository.save(issue7);
     }
 
     @Test
@@ -180,5 +200,27 @@ public class IssueRepositoryTest {
         issueEntities1.add(issue4);
         issueEntities1.add(issue5);
         Assertions.assertThat(issueRepository.findIssuesByAssignee("hojin1")).isEqualTo(issueEntities1);
+    }
+
+    @Test
+    public void testFindByReporter()
+    {
+        List<IssueEntity> issueEntities1 = new ArrayList<>();
+        issueEntities1.add(issue6);
+        issueEntities1.add(issue7);
+        Assertions.assertThat(issueRepository.findByReporter("reporter1")).isEqualTo(issueEntities1);
+    }
+
+    @Test
+    public void testFindByStateIn()
+    {
+        List<IssueEntity> issueEntities1 = new ArrayList<>();
+        issueEntities1.add(issue4);
+        issueEntities1.add(issue5);
+        issueEntities1.add(issue6);
+        List<String> states = new ArrayList<>();
+        states.add("ASSIGNED");
+        states.add("RESOLVED");
+        Assertions.assertThat(issueRepository.findByStateIn(states)).isEqualTo(issueEntities1);
     }
 }

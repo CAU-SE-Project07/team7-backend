@@ -20,10 +20,9 @@ public interface IssueRepository extends JpaRepository<IssueEntity, Integer> {
     List<IssueEntity> findByMemberId(MemberEntity memberId);
     @Query("SELECT i FROM ISSUE i WHERE i.assignee = :assignee AND i.state = 'ASSIGNED'")
     List<IssueEntity> findIssuesByAssignee(@Param("assignee") String assignee);
-    List<IssueEntity> findByProjectId_ProjectNm(String projectNm);
     IssueEntity findByProjectIdAndTitle(ProjectEntity projectId, String title);
     @Query("SELECT i FROM ISSUE i WHERE i.reporter = :reporter")
     List<IssueEntity> findByReporter(@Param("reporter") String reporter);
     List<IssueEntity> findByStateIn(List<String> states);
-    List<IssueEntity> findByState(String state);
+    List<IssueEntity> findByMemberId_UserIdAndState(String userId, String state);
 }
