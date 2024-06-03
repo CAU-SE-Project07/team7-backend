@@ -190,7 +190,8 @@ public class MemberServiceImpl implements MemberService {
                     if(ObjectUtils.isEmpty(findMember)) {
                         return new ResponseVo(11,"사용자가 존재하지 않습니다.");
                     }
-                    if(findMember.getIssueEntities().size() > 0) {
+
+                    if(findMember.getIssueEntities()!=null&&!findMember.getIssueEntities().isEmpty()) {
                         /** 사용자만 삭제할 것 => 자식인 issue와의 부모 관계 끊어주기 */
                         for(IssueEntity issueEntity: findMember.getIssueEntities()) {
                             issueEntity.setMemberId(null);

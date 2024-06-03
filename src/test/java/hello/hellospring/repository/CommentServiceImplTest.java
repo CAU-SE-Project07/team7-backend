@@ -37,14 +37,12 @@ public class CommentServiceImplTest {
     void setUp() {
         project1 = new ProjectEntity();
         {
-            project1.setProjectId(1);
             project1.setProjectNm("testProjectName");
             project1.setProjectDesc("this is test project1");
         }
         projectRepository.save(project1);
         tester1 = new MemberEntity();
         {
-            tester1.setMemberId(1);
             tester1.setUserId("testID");
             tester1.setUserNm("testID");
             tester1.setUserPwd("tester1pass");
@@ -57,7 +55,6 @@ public class CommentServiceImplTest {
         memberRepository.save(tester1);
         issue1 = new IssueEntity();
         {
-            issue1.setIssueId(1);
             issue1.setTitle("testTitle");
             issue1.setDescription("This is test issue1");
             issue1.setReporter("");
@@ -87,6 +84,5 @@ public class CommentServiceImplTest {
         ResponseVo response = commentService.insertComment(commentVo);
 
         Assertions.assertThat(response.getMsg()).isEqualTo("SUCCESS");
-
     }
 }

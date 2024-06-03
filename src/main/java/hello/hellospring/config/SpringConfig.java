@@ -3,6 +3,7 @@ package hello.hellospring.config;
 import hello.hellospring.repository.*;
 import hello.hellospring.service.IssueService;
 import hello.hellospring.service.IssueServiceImpl;
+import hello.hellospring.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,14 +15,17 @@ public class SpringConfig {
     private final ProjectRepository projectRepository;
     private final PriorityRepository priorityRepository;
     private final IssueService issueService;
+    private final MemberService memberService;
     public SpringConfig(IssueRepository issueRepository, CommentRepository commentRepository, MemberRepository memberRepository,
-                        ProjectRepository projectRepository,PriorityRepository priorityRepository, IssueService issueService) {
+                        ProjectRepository projectRepository,PriorityRepository priorityRepository, IssueService issueService
+    , MemberService memberService) {
         this.issueRepository = issueRepository;
         this.commentRepository = commentRepository;
         this.memberRepository = memberRepository;
         this.projectRepository = projectRepository;
         this.priorityRepository = priorityRepository;
         this.issueService = issueService;
+        this.memberService = memberService;
     }
 
     @Bean
