@@ -79,9 +79,9 @@ public class IssueController {
     /**
      * reporter기반 다긁어오기
      * */
-    @GetMapping("/reporterName/{reporterName}")
-    public List<IssueVo> getIssuesByReporterName(@PathVariable String reporterName) {
-        return issueService.getIssuesByReporter(reporterName);
+    @GetMapping("/reporterId/{reporterId}")
+    public List<IssueVo> getIssuesByReporterName(@PathVariable String reporterId) {
+        return issueService.getIssuesByReporter(reporterId);
     }
 
     /**
