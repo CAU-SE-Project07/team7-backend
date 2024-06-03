@@ -86,6 +86,9 @@
 ## 사용 방법
 
 애플리케이션을 실행한 후, 웹 브라우저에서 `http://localhost:3000`에 접속하여 다양한 기능을 사용할 수 있습니다.
+## 0. 어드민은 프로젝트와 사용자 정보를 각각 입력하고 ADD 버튼으로 유저와 프로젝트를 추가합니다.
+<img width="321" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/21a998c9-eed9-4c66-9e14-5c328f08a6bd">
+
 ### 1. 어드민이 생성해둔 아이디로 로그인 합니다.
 <img width="519" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/75228dbf-917b-436c-8468-e716b2092cc0">
 <img width="561" alt="image" src="https://github.com/CAU-SE-Project07/team7-backend/assets/140313197/ffbc4cb7-2940-4397-9c7a-73be77c8a73c">
